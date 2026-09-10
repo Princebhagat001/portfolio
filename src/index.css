@@ -182,6 +182,10 @@
   background: var(--portfolio-black);
 }
 
+.hero-status-signal {
+  color: var(--portfolio-green);
+}
+
 /* A CSS-only network field that remains intentionally subdued behind footer copy. */
 .closing-field::before,
 .closing-field::after {

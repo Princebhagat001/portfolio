@@ -9,6 +9,7 @@ export const personal = {
   resumePath: '/resume.pdf',
   website: 'https://princebhagat.com.np',
   status: 'SECURITY RESEARCH · CTF PLAYER',
+  heroStatus: 'CTF PLAYER',
   footerIntroduction: 'Cybersecurity student learning penetration testing and network security from Kathmandu, Nepal.',
   focusAreas: ['Offensive Security', 'Network Security', 'Penetration Testing'],
 }
