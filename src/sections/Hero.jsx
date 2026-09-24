@@ -60,7 +60,7 @@ function Hero() {
       </div>
       
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 sm:bottom-12 ">
-        <ScrollIndicator />
+        <ScrollIndicator targetId="skills" />
       </div>
     </section>
   )

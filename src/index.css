@@ -135,6 +135,21 @@
   font-family: 'Josefin Sans', sans-serif;
 }
 
+/* Dynamic color mix utilities for GeometricArt */
+.art-border-10 { border-color: color-mix(in srgb, currentColor 10%, transparent); }
+.art-border-15 { border-color: color-mix(in srgb, currentColor 15%, transparent); }
+.art-border-20 { border-color: color-mix(in srgb, currentColor 20%, transparent); }
+.art-bg-10 { background-color: color-mix(in srgb, currentColor 10%, transparent); }
+.art-bg-15 { background-color: color-mix(in srgb, currentColor 15%, transparent); }
+.art-bg-30 { background-color: color-mix(in srgb, currentColor 30%, transparent); }
+.art-bg-50 { background-color: color-mix(in srgb, currentColor 50%, transparent); }
+.art-bg-60 { background-color: color-mix(in srgb, currentColor 60%, transparent); }
+.art-bg-80 { background-color: color-mix(in srgb, currentColor 80%, transparent); }
+.art-shadow-15 { box-shadow: 0 0 15px currentColor; }
+.art-shadow-40 { box-shadow: 0 0 40px currentColor; }
+.art-gradient-line { background: linear-gradient(to right, transparent, color-mix(in srgb, currentColor 15%, transparent), transparent); }
+
+
 /* The large name is one shared wordmark treatment: broad, geometric curves,
    crisp diagonal cuts, and deliberately tight editorial spacing. */
 .name-display {
@@ -425,7 +440,50 @@
   100% { opacity: 1; transform: translateX(0); }  
 } 
 @keyframes radar-scan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }  
-@keyframes morph-polygon { 0% { clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); } 25% { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 0% 50%); } 50% { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); } 75% { clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%); } 100% { clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); } }  
+@keyframes morph-polygon { 
+  0% { 
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); 
+    background-color: rgb(105 173 63 / 0.1); /* green */
+    border-color: rgb(105 173 63 / 0.8);
+    box-shadow: inset 0 0 20px rgb(105 173 63 / 0.2);
+    color: rgb(105 173 63);
+  } 
+  25% { 
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%, 0% 50%); 
+    background-color: rgb(209 77 69 / 0.1); /* red */
+    border-color: rgb(209 77 69 / 0.8);
+    box-shadow: inset 0 0 20px rgb(209 77 69 / 0.2);
+    color: rgb(209 77 69);
+  } 
+  50% { 
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); 
+    background-color: rgb(105 173 63 / 0.1); /* green */
+    border-color: rgb(105 173 63 / 0.8);
+    box-shadow: inset 0 0 20px rgb(105 173 63 / 0.2);
+    color: rgb(105 173 63);
+  } 
+  75% { 
+    clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%); 
+    background-color: rgb(209 77 69 / 0.1); /* red */
+    border-color: rgb(209 77 69 / 0.8);
+    box-shadow: inset 0 0 20px rgb(209 77 69 / 0.2);
+    color: rgb(209 77 69);
+  } 
+  100% { 
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); 
+    background-color: rgb(105 173 63 / 0.1); /* green */
+    border-color: rgb(105 173 63 / 0.8);
+    box-shadow: inset 0 0 20px rgb(105 173 63 / 0.2);
+    color: rgb(105 173 63);
+  } 
+}
+@keyframes art-color-shift {
+  0% { color: rgb(105 173 63); }
+  25% { color: rgb(209 77 69); }
+  50% { color: rgb(105 173 63); }
+  75% { color: rgb(209 77 69); }
+  100% { color: rgb(105 173 63); }
+}
 @keyframes nova-burst { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }  
 @keyframes nova-flash { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }  
 @keyframes nova-ring { 0% { transform: scale(0.2); opacity: 1; border-width: 10px; } 100% { transform: scale(1.5); opacity: 0; border-width: 1px; } }  
