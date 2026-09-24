@@ -7,12 +7,16 @@ import { personal } from '../data/personal'
 
 function Hero() {
   return (
-    <section id="home" className="hero-grid relative isolate flex min-h-screen flex-col overflow-hidden bg-black" aria-labelledby="hero-name">
+    <section 
+      id="home" 
+      className="hero-grid relative isolate flex min-h-screen flex-col bg-black" 
+      aria-labelledby="hero-name"
+    >
       <Navbar />
-      
-      <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col justify-center px-6 pt-24 sm:px-12 lg:flex-row lg:items-center lg:px-16 lg:pt-0">
+
+      <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col justify-center px-6 pt-24 sm:px-12 lg:flex-row lg:items-center lg:px-16 lg:pt-0 ">
         
-        <div className="flex-1 w-full flex flex-col items-start justify-center relative z-10 lg:pl-16 xl:pl-[140px] lg:pr-10 order-1 lg:mt-10">
+        <div className="flex-1 w-full flex flex-col items-start justify-center relative z-10 lg:pl-16 xl:pl-[140px] lg:pr-10 order-1 lg:mt-10 ">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-[var(--portfolio-green)]">
             Hello, I'm
           </p>
@@ -49,13 +53,13 @@ function Hero() {
           </div>
         </div>
 
-        <div className="flex-1 w-full flex items-center justify-center lg:justify-end mt-16 lg:mt-0 order-2">
+        <div className="flex-1 w-full flex items-center justify-center lg:justify-end mt-16 lg:mt-0 order-2 ">
           <GeometricArt />
         </div>
 
       </div>
       
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 sm:bottom-12">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 sm:bottom-12 ">
         <ScrollIndicator />
       </div>
     </section>

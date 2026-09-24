@@ -13,7 +13,7 @@ function App() {
     <>
       <CustomCursor />
       <SocialRail />
-      <main>
+      <main className="overflow-x-hidden">
         <Hero />
         <About />
         <Skills />
