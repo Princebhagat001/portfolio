@@ -395,3 +395,18 @@
   content: '';
   mask-image: radial-gradient(ellipse at center, black, transparent 75%);
 }
+
+/* Navbar Hover Effect */  
+.nav-link::after {  
+  content: '';  
+  position: absolute;  
+  bottom: 0;  
+  left: 0;  
+  width: 0;  
+  height: 2px;  
+  background-color: var(--portfolio-green);  
+  transition: width 0.3s ease-in-out;  
+}  
+.nav-link:hover::after {  
+  width: 100%;  
+}

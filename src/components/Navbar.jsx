@@ -34,13 +34,13 @@ function Navbar() {
   return (
     <header className="site-header fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-black/90 backdrop-blur-md">
       <nav className="mx-auto flex min-h-16 max-w-[1600px] items-center justify-between gap-4 px-5 sm:min-h-20 sm:px-8 lg:px-12" aria-label="Main navigation">
-        <a href="#home" className="shrink-0 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:text-white/60" aria-label={`${personal.fullName} home`}>
-          {personal.fullName}
+        <a href="#home" className="shrink-0 text-xl font-bold tracking-[0.1em] text-white transition-colors hover:text-white/80" aria-label={`${personal.fullName} home`}>
+          <span className="text-[var(--portfolio-green)]">./</span>prince
         </a>
 
-        <div className="hidden items-center justify-center gap-5 lg:flex" aria-label="Portfolio sections">
+        <div className="hidden items-center justify-center gap-6 lg:flex" aria-label="Portfolio sections">
           {navItems.map((item) => (
-            <a key={item.label} href={item.href} className="text-[10px] font-medium uppercase tracking-[0.16em] text-white/55 transition-colors hover:text-white focus-visible:text-white">
+            <a key={item.label} href={item.href} className="nav-link relative py-2 text-[12px] font-medium uppercase tracking-[0.15em] text-white/70 transition-colors hover:text-white focus-visible:text-white">
               {item.label}
             </a>
           ))}
