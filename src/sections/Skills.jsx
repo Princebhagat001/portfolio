@@ -13,29 +13,44 @@ const skillsData = [
 function SkillCard({ skill, index, isVisible }) {
   const [currentPercentage, setCurrentPercentage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [dragDirection, setDragDirection] = useState('none');
+  const [isSnappingBack, setIsSnappingBack] = useState(false);
+  
   const barRef = useRef(null);
+  const prevPercentRef = useRef(0);
+  const snapTimeoutRef = useRef(null);
 
   // Animate initial percentage when it comes into view, unless we are dragging
   useEffect(() => {
-    if (!isDragging) {
+    if (!isDragging && !isSnappingBack) {
       setCurrentPercentage(isVisible ? skill.percentage : 0);
+      prevPercentRef.current = isVisible ? skill.percentage : 0;
     }
-  }, [isVisible, skill.percentage, isDragging]);
+  }, [isVisible, skill.percentage, isDragging, isSnappingBack]);
 
   const updatePercentageFromEvent = useCallback((e) => {
     if (!barRef.current) return;
     const rect = barRef.current.getBoundingClientRect();
-    // Support both mouse and touch events
     const clientX = e.clientX ?? (e.touches && e.touches[0].clientX);
     if (clientX === undefined) return;
     
     let x = clientX - rect.left;
     const newPercentage = Math.min(Math.max(Math.round((x / rect.width) * 100), 0), 100);
+    
+    if (newPercentage > prevPercentRef.current) {
+      setDragDirection('increasing');
+    } else if (newPercentage < prevPercentRef.current) {
+      setDragDirection('decreasing');
+    }
+    
+    prevPercentRef.current = newPercentage;
     setCurrentPercentage(newPercentage);
   }, []);
 
   const handlePointerDown = (e) => {
     setIsDragging(true);
+    setIsSnappingBack(false);
+    if (snapTimeoutRef.current) clearTimeout(snapTimeoutRef.current);
     e.target.setPointerCapture(e.pointerId);
     updatePercentageFromEvent(e);
   };
@@ -49,7 +64,23 @@ function SkillCard({ skill, index, isVisible }) {
   const handlePointerUp = (e) => {
     setIsDragging(false);
     e.target.releasePointerCapture(e.pointerId);
+    
+    if (currentPercentage !== skill.percentage) {
+      setIsSnappingBack(true);
+      setCurrentPercentage(skill.percentage);
+      prevPercentRef.current = skill.percentage;
+      
+      snapTimeoutRef.current = setTimeout(() => {
+        setIsSnappingBack(false);
+        setDragDirection('none');
+      }, 1000);
+    } else {
+      setDragDirection('none');
+    }
   };
+
+  const showSparkle = isDragging && dragDirection === 'increasing';
+  const showHacked = (isDragging && dragDirection === 'decreasing') || isSnappingBack;
 
   return (
     <div 
@@ -81,14 +112,14 @@ function SkillCard({ skill, index, isVisible }) {
         <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none"></div>
 
         <div 
-          className={`h-full bg-[var(--portfolio-green)] rounded-full relative ${isDragging ? 'transition-none brightness-125' : 'transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_var(--portfolio-green)]'} overflow-hidden`}
+          className={`h-full bg-[var(--portfolio-green)] rounded-full relative ${isDragging && !isSnappingBack ? 'transition-none brightness-125' : 'transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_var(--portfolio-green)]'} overflow-hidden`}
           style={{ width: `${currentPercentage}%` }}
         >
           <div className="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite] -translate-x-full" style={{ backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)' }}></div>
         </div>
 
-        {/* Sparkle tip when dragging */}
-        {isDragging && (
+        {/* Sparkle tip when increasing */}
+        {showSparkle && (
           <div 
             className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center z-20 pointer-events-none"
             style={{ left: `calc(${currentPercentage}% - 2px)` }}
@@ -105,6 +136,35 @@ function SkillCard({ skill, index, isVisible }) {
             <div className="absolute bottom-4 -right-5 w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{ animationDuration: '0.6s' }}></div>
             <div className="absolute -top-3 left-4 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDuration: '0.5s' }}></div>
             <div className="absolute bottom-3 left-3 w-0.5 h-0.5 bg-white rounded-full animate-ping" style={{ animationDuration: '0.3s' }}></div>
+          </div>
+        )}
+
+        {/* Hacked swarm tip when decreasing or snapping back */}
+        {showHacked && (
+          <div 
+            className={`absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none w-20 h-20 -translate-x-10 ${isSnappingBack ? 'transition-all duration-1000 ease-out' : 'transition-none'}`}
+            style={{ left: `${currentPercentage}%` }}
+          >
+            {Array.from({ length: 8 }).map((_, i) => {
+              const colors = ['var(--portfolio-green)', '#ff2a2a'];
+              const color = colors[Math.floor(Math.random() * colors.length)];
+              return (
+                <span 
+                  key={i} 
+                  className="absolute font-mono text-[10px] font-black animate-[ping_1s_ease-out_infinite]"
+                  style={{
+                    color: color,
+                    left: `${10 + Math.random() * 80}%`,
+                    top: `${10 + Math.random() * 80}%`,
+                    animationDuration: `${0.3 + Math.random() * 0.5}s`,
+                    animationDelay: `${Math.random() * 0.4}s`,
+                    textShadow: `0 0 5px ${color}, 0 0 10px ${color}`
+                  }}
+                >
+                  {Math.random() > 0.5 ? '1' : '0'}
+                </span>
+              );
+            })}
           </div>
         )}
       </div>
