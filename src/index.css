@@ -275,10 +275,23 @@
 }
 
 .terminal-window {
+  position: relative;
   border: 1px solid rgb(181 181 174 / 0.24);
   border-radius: 1.25rem;
   background: rgb(5 5 5 / 0.9);
   box-shadow: inset 0 1px 0 rgb(247 247 242 / 0.04), 0 20px 65px rgb(0 0 0 / 0.35);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.terminal-window:hover {
+  border-color: rgb(105 173 63 / 0.5);
+  box-shadow: inset 0 1px 0 rgb(247 247 242 / 0.04), 0 20px 65px rgb(0 0 0 / 0.35), 0 0 30px rgb(105 173 63 / 0.15);
+  transform: translateY(-2px);
+}
+
+.terminal-window.form-window:hover {
+  border-color: rgb(209 77 69 / 0.5);
+  box-shadow: inset 0 1px 0 rgb(247 247 242 / 0.04), 0 20px 65px rgb(0 0 0 / 0.35), 0 0 30px rgb(209 77 69 / 0.15);
 }
 
 .terminal-window-bar {
@@ -315,11 +328,14 @@
 .contact-channel small { margin-bottom: 0.2rem; color: var(--portfolio-grey); font-size: 0.74rem; letter-spacing: 0.06em; }
 .contact-channel strong { overflow-wrap: anywhere; font-size: 0.9rem; font-weight: 600; }
 .terminal-label { display: block; margin-bottom: 0.55rem; color: var(--portfolio-white); font-size: 0.8rem; font-weight: 600; }
-.terminal-input { display: block; width: 100%; border: 1px solid rgb(181 181 174 / 0.38); border-radius: 0.65rem; background: rgb(0 0 0 / 0.7); padding: 0.92rem 1rem; color: var(--portfolio-white); font-size: 0.92rem; outline: none; transition: border-color 160ms ease, box-shadow 160ms ease; }
+.terminal-input { display: block; width: 100%; border: 1px solid rgb(181 181 174 / 0.38); border-radius: 0.65rem; background: rgb(0 0 0 / 0.7); padding: 0.92rem 1rem; color: var(--portfolio-white); font-size: 0.92rem; outline: none; transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease; }
 .terminal-input::placeholder { color: rgb(181 181 174 / 0.72); }
-.terminal-input:focus { border-color: var(--portfolio-green); box-shadow: 0 0 0 3px rgb(105 173 63 / 0.12); }
-.terminal-submit { width: 100%; border: 1px solid var(--portfolio-green); border-radius: 0.65rem; background: rgb(105 173 63 / 0.14); padding: 1rem; color: var(--portfolio-white); font-weight: 700; letter-spacing: 0.04em; transition: background-color 160ms ease, color 160ms ease; }
-.terminal-submit:hover { background: var(--portfolio-green); color: var(--portfolio-black); }
+.terminal-input:hover { border-color: rgb(105 173 63 / 0.45); background: rgb(10 10 10 / 0.9); box-shadow: 0 0 8px rgb(105 173 63 / 0.08); }
+.terminal-input:focus { border-color: var(--portfolio-green); background: rgb(5 5 5 / 1); box-shadow: 0 0 15px rgb(105 173 63 / 0.15), inset 0 0 10px rgb(105 173 63 / 0.05); }
+.terminal-submit { position: relative; overflow: hidden; width: 100%; border: 1px solid var(--portfolio-green); border-radius: 0.65rem; background: rgb(105 173 63 / 0.14); padding: 1rem; color: var(--portfolio-white); font-weight: 700; letter-spacing: 0.04em; transition: background-color 160ms ease, color 160ms ease, transform 160ms ease, box-shadow 160ms ease; }
+.terminal-submit::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgb(105 173 63 / 0.4), transparent); transform: skewX(-20deg); transition: left 0.5s ease; }
+.terminal-submit:hover { background: var(--portfolio-green); color: var(--portfolio-black); box-shadow: 0 0 20px rgb(105 173 63 / 0.4); transform: translateY(-1px); }
+.terminal-submit:hover::before { left: 200%; }
 
 .education-timeline {
   position: relative;
@@ -483,6 +499,17 @@
   50% { color: rgb(105 173 63); }
   75% { color: rgb(209 77 69); }
   100% { color: rgb(105 173 63); }
+}
+@keyframes pulse-glow {
+  0%, 20%, 80%, 100% { box-shadow: 0 0 0 transparent; }
+  50% { box-shadow: 0 0 22px currentColor; }
+}
+@keyframes dual-blink {
+  0%, 35% { background-color: var(--portfolio-green); box-shadow: 0 0 10px var(--portfolio-green); opacity: 1; }
+  40%, 45% { opacity: 0.2; box-shadow: 0 0 0 transparent; }
+  50%, 85% { background-color: rgb(209, 77, 69); box-shadow: 0 0 10px rgb(209, 77, 69); opacity: 1; }
+  90%, 95% { opacity: 0.2; box-shadow: 0 0 0 transparent; }
+  100% { background-color: var(--portfolio-green); box-shadow: 0 0 10px var(--portfolio-green); opacity: 1; }
 }
 @keyframes nova-burst { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }  
 @keyframes nova-flash { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }  

@@ -216,7 +216,7 @@ function Skills() {
             Skills
           </p>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
-            Technical Capabilities
+            Technical <span className="text-[var(--portfolio-green)]">Capabilities</span>
           </h2>
         </div>
         

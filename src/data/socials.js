@@ -22,6 +22,6 @@ export const socials = [
   {
     label: 'Email',
     href: 'mailto:bhagatprince365@gmail.com',
-    external: false,
+    external: true,
   },
 ]

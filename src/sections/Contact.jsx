@@ -30,7 +30,7 @@ function Contact() {
       <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12">
         <header className="mx-auto max-w-4xl text-center">
           <p className="terminal-prompt">./open_channel.sh</p>
-          <h2 id="contact-heading" className="mt-5 font-display text-[clamp(2.35rem,5.7vw,4.75rem)] font-bold leading-none tracking-[-0.06em] text-[var(--portfolio-white)]">Start a <span className="text-[var(--portfolio-green)]">conversation.</span></h2>
+          <h2 id="contact-heading" className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight mt-5">Start a <span className="text-[var(--portfolio-green)]">conversation.</span></h2>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-[var(--portfolio-grey)]">For security research, collaboration, or a focused project, choose a channel below or send a message directly.</p>
         </header>
 
@@ -50,7 +50,7 @@ function Contact() {
             </div>
           </section>
 
-          <form className="terminal-window" onSubmit={submitMessage}>
+          <form className="terminal-window form-window" onSubmit={submitMessage}>
             <div className="terminal-window-bar"><TerminalDots /><span className="text-[var(--portfolio-red)]">~/send_message.sh</span></div>
             <div className="space-y-5 p-[1.42rem] sm:p-[1.9rem]">
               <div>

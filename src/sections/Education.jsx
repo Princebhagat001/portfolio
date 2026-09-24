@@ -31,8 +31,8 @@ function Education() {
           className="mx-auto max-w-3xl text-center transition-all duration-1000 ease-out"
           style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
         >
-          <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--portfolio-green)]">Education</p>
-          <h2 id="education-heading" className="mt-5 font-display text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[0.94] tracking-[-0.06em] text-[var(--portfolio-white)]">Building a foundation in cybersecurity.</h2>
+          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--portfolio-green)] mb-4">Education</p>
+          <h2 id="education-heading" className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">Building a foundation in <span className="text-[var(--portfolio-green)]">cybersecurity.</span></h2>
         </header>
 
         <ol className="education-timeline mx-auto mt-14 max-w-4xl space-y-5 sm:mt-20">

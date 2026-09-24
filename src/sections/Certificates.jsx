@@ -27,28 +27,28 @@ function Certificates() {
     <section id="certificates" ref={sectionRef} className="relative overflow-hidden border-t border-white/10 bg-[var(--portfolio-black)] py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <header 
-          className="flex flex-col md:flex-row md:items-end justify-between gap-10 transition-all duration-1000 ease-out"
+          className="flex flex-col md:flex-row md:items-center justify-between gap-10 transition-all duration-1000 ease-out"
           style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
         >
           <div className="max-w-2xl">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--portfolio-green)]">Certificates</p>
-            <h2 className="mt-5 font-display text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-[var(--portfolio-white)]">
-              Always learning. Always building.
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--portfolio-green)] mb-4">Certificates</p>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
+              Always learning. <span className="text-[var(--portfolio-green)]">Always building.</span>
             </h2>
             <p className="mt-6 text-lg text-[var(--portfolio-grey)] leading-relaxed max-w-xl">
               A collection of courses and hands-on learning across development, design, and the web.
             </p>
           </div>
           
-          <div className="flex items-center gap-4 border border-white/10 rounded-2xl p-5 bg-white/5 backdrop-blur-sm shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--portfolio-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <div className="group/badge flex items-center gap-4 border border-white/10 rounded-2xl p-5 bg-white/5 backdrop-blur-sm shrink-0 transition-all duration-300 hover:border-[var(--portfolio-green)]/40 hover:bg-white/10 hover:-translate-y-1 hover:shadow-[0_10px_30px_-15px_rgba(105,173,63,0.2)]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--portfolio-green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-all duration-300 group-hover/badge:scale-110 group-hover/badge:drop-shadow-[0_0_8px_var(--portfolio-green)]">
               <path d="M12 15l-3.5 2 1-4.5L6 9l4.5-.5L12 4.5 13.5 8.5 18 9l-3.5 3.5 1 4.5L12 15z"/>
               <path d="M12 15v6"/>
               <path d="M9 19l3 2 3-2"/>
             </svg>
             <div>
               <div className="font-display text-4xl font-bold text-white leading-none">{certifications.length < 10 ? `0${certifications.length}` : certifications.length}</div>
-              <div className="text-xs text-[var(--portfolio-grey)] mt-1">certificates earned</div>
+              <div className="text-xs text-[var(--portfolio-grey)] mt-1 transition-colors duration-300 group-hover/badge:text-white/80">certificates earned</div>
             </div>
           </div>
         </header>

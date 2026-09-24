@@ -32,7 +32,7 @@ function Experience() {
             Journey
           </p>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
-            Experience
+            Experi<span className="text-[var(--portfolio-green)]">ence</span>
           </h2>
         </div>
         
