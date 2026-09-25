@@ -23,11 +23,22 @@ function Navbar() {
     const closeOnEscape = (event) => {
       if (event.key === 'Escape') setIsMenuOpen(false)
     }
+    const closeOnScroll = () => {
+      setIsMenuOpen(false)
+    }
+    
     document.addEventListener('pointerdown', closeOnOutsideClick)
     document.addEventListener('keydown', closeOnEscape)
+    window.addEventListener('scroll', closeOnScroll, { passive: true, capture: true })
+    window.addEventListener('touchmove', closeOnScroll, { passive: true, capture: true })
+    window.addEventListener('wheel', closeOnScroll, { passive: true, capture: true })
+    
     return () => {
       document.removeEventListener('pointerdown', closeOnOutsideClick)
       document.removeEventListener('keydown', closeOnEscape)
+      window.removeEventListener('scroll', closeOnScroll, { capture: true })
+      window.removeEventListener('touchmove', closeOnScroll, { capture: true })
+      window.removeEventListener('wheel', closeOnScroll, { capture: true })
     }
   }, [])
 
@@ -53,12 +64,15 @@ function Navbar() {
 
         <div ref={mobileMenuRef} className="relative sm:hidden">
           <button type="button" className="rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.16em] text-white transition-colors hover:border-white" aria-expanded={isMenuOpen} aria-controls="mobile-navigation" onClick={() => setIsMenuOpen(!isMenuOpen)}>Menu</button>
-          {isMenuOpen && <div id="mobile-navigation" className="absolute right-0 top-full mt-2 w-48 rounded-2xl border border-white/15 bg-[#090909]/95 p-2 shadow-2xl backdrop-blur-md">
+          <div 
+            id="mobile-navigation" 
+            className={`absolute right-0 top-full mt-2 w-48 rounded-2xl border border-white/15 bg-[#090909]/95 p-2 shadow-2xl backdrop-blur-md transition-all duration-300 origin-top-right ${isMenuOpen ? 'scale-100 opacity-100 visible pointer-events-auto' : 'scale-95 opacity-0 invisible pointer-events-none'}`}
+          >
             {navItems.map((item) => (
               <a key={item.label} href={item.href} onClick={() => setIsMenuOpen(false)} className="block rounded-md px-3 py-2.5 text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:bg-white hover:text-black">{item.label}</a>
             ))}
             <a href={personal.resumePath} target="_blank" rel="noopener noreferrer" onClick={() => setIsMenuOpen(false)} className="block rounded-md px-3 py-2.5 text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:bg-white hover:text-black">CV ↗</a>
-          </div>}
+          </div>
         </div>
       </nav>
     </header>

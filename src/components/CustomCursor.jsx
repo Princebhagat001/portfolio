@@ -19,7 +19,7 @@ function CustomCursor() {
     <div 
       ref={cursorRef}
       aria-hidden="true" 
-      className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-6 w-6 rounded-full border border-white/60 bg-white/25 transition-[width,height] duration-150 md:block will-change-transform"
+      className="pointer-events-none fixed left-0 top-0 z-[99999] hidden h-6 w-6 rounded-full border border-white/60 bg-white/25 transition-[width,height] duration-150 md:block will-change-transform"
       style={{ transform: 'translate3d(-100px, -100px, 0) translate(-50%, -50%)' }} 
     />
   )

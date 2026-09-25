@@ -41,7 +41,7 @@ function Hero() {
           </p>
           
           <div className="flex flex-wrap items-center gap-5">
-            <a href="#certifications" className="inline-flex items-center justify-center rounded-full border border-[var(--portfolio-green)] bg-[var(--portfolio-green)]/10 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--portfolio-green)] transition-all hover:bg-[var(--portfolio-green)] hover:text-black">
+            <a href="#certificates" className="inline-flex items-center justify-center rounded-full border border-[var(--portfolio-green)] bg-[var(--portfolio-green)]/10 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--portfolio-green)] transition-all hover:bg-[var(--portfolio-green)] hover:text-black">
               View Certificates <span className="ml-2 text-lg leading-none">↗</span>
             </a>
             <a href="#contact" className="inline-flex items-center justify-center rounded-full border border-white/20 bg-transparent px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-all hover:border-white hover:bg-white hover:text-black">
