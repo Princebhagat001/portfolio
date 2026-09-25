@@ -69,8 +69,8 @@ function Certificates() {
                 
                 {/* View Certificate Button overlay */}
                 <div className="absolute bottom-3 right-3 opacity-0 transform translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
-                  <a href={cert.verifyLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-[#1a1a1a] text-white text-xs px-3 py-2 rounded-md font-semibold hover:bg-black transition-colors shadow-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <a href={cert.verifyLink} target="_blank" rel="noopener noreferrer" title={`View full image for ${cert.title}`} aria-label={`View full certificate image for ${cert.title}`} className="flex items-center gap-2 bg-[#1a1a1a] text-white text-xs px-3 py-2 rounded-md font-semibold hover:bg-black transition-colors shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
                       <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
                     </svg>
                     View certificate
@@ -92,22 +92,24 @@ function Certificates() {
                 
                 <div className="mt-auto">
                   <div className="flex items-center gap-2 text-sm text-[var(--portfolio-grey)] font-medium mb-5">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                     </svg>
                     {cert.issuer}
                   </div>
                   
-                  <div className="h-px w-full bg-white/10 mb-4" />
+                  <div className="h-px w-full bg-white/10 mb-4" aria-hidden="true" />
                   
                   <a 
                     href={cert.verifyLink} 
                     target="_blank" 
                     rel="noopener noreferrer"
+                    title={`Verify ${cert.title} by ${cert.issuer}`}
+                    aria-label={`Verify ${cert.title} by ${cert.issuer}`}
                     className="flex items-center justify-between text-sm font-semibold text-white group/link hover:text-[var(--portfolio-green)] transition-colors"
                   >
                     Verify certificate
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" className="transform transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5">
                       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                       <polyline points="15 3 21 3 21 9"></polyline>
                       <line x1="10" y1="14" x2="21" y2="3"></line>

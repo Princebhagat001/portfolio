@@ -102,6 +102,12 @@ function SkillCard({ skill, index, isVisible }) {
       {/* Progress Bar (Interactive) */}
       <div 
         ref={barRef}
+        role="slider"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={currentPercentage}
+        aria-label={`Skill level for ${skill.name}`}
+        tabIndex="0"
         className="w-full h-2.5 bg-white/5 rounded-full mb-4 border border-white/10 shadow-inner relative cursor-ew-resize overflow-visible"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
