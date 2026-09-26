@@ -24,8 +24,8 @@ function Certificates() {
   }, []);
 
   return (
-    <section id="certificates" ref={sectionRef} className="relative overflow-hidden border-t border-white/10 bg-[var(--portfolio-black)] py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+    <section id="certificates" ref={sectionRef} className="abstract-field isolate relative overflow-hidden border-t border-white/10 bg-[var(--portfolio-black)] py-16 sm:py-24">
+      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <header 
           className="flex flex-col md:flex-row md:items-center justify-between gap-10 transition-all duration-1000 ease-out"
           style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}

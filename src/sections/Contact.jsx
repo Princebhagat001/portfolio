@@ -26,7 +26,8 @@ function Contact() {
   const updateField = (event) => setForm({ ...form, [event.target.name]: event.target.value })
 
   return (
-    <section id="contact" className="terminal-section relative overflow-hidden border-t border-white/10 bg-black py-20 sm:py-28" aria-labelledby="contact-heading">
+    <section id="contact" className="terminal-section relative isolate overflow-hidden border-t border-white/10 bg-black py-20 sm:py-28" aria-labelledby="contact-heading">
+      <div className="abstract-field absolute inset-0 z-0 pointer-events-none"></div>
       <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12">
         <header className="mx-auto max-w-4xl text-center">
           <p className="terminal-prompt">./open_channel.sh</p>

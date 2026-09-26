@@ -213,8 +213,8 @@ function Skills() {
   }, []);
 
   return (
-    <section id="skills" ref={sectionRef} className="relative py-24 sm:py-32 bg-[#090909] border-t border-white/5">
-      <div className="mx-auto max-w-[1200px] px-6 sm:px-12 lg:px-16">
+    <section id="skills" ref={sectionRef} className="abstract-field isolate relative py-16 sm:py-24 bg-[#090909] border-t border-white/5">
+      <div className="relative z-10 mx-auto max-w-[1200px] px-6 sm:px-12 lg:px-16">
         
         {/* Section Header */}
         <div className="text-center mb-16 sm:mb-20">

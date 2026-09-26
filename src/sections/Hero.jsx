@@ -9,7 +9,7 @@ function Hero() {
   return (
     <section 
       id="home" 
-      className="hero-grid relative isolate flex min-h-screen flex-col bg-black" 
+      className="hero-grid abstract-field relative isolate flex min-h-screen flex-col bg-black" 
       aria-labelledby="hero-name"
     >
       <Navbar />

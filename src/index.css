@@ -201,38 +201,81 @@
   color: var(--portfolio-green);
 }
 
-/* A CSS-only network field that remains intentionally subdued behind footer copy. */
-.closing-field::before,
-.closing-field::after {
+/* CSS Galaxy Field with abstract constellation lines and nebula dust */
+@keyframes cosmic-drift {
+  0% { transform: rotate(0deg) scale(1) translate(0, 0); }
+  33% { transform: rotate(1deg) scale(1.05) translate(1%, -1%); }
+  66% { transform: rotate(-1deg) scale(1.02) translate(-1%, 1%); }
+  100% { transform: rotate(0deg) scale(1) translate(0, 0); }
+}
+
+.abstract-field {
+  overflow: hidden;
+}
+
+.abstract-field::before,
+.abstract-field::after {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   content: '';
 }
 
-.closing-field::before {
-  opacity: 0.58;
+.abstract-field::before {
+  opacity: 0.65;
+  /* Make canvas larger than viewport so rotation doesn't expose edges */
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  animation: cosmic-drift 60s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
   background-image:
-    radial-gradient(circle at 2% 17%, rgb(247 247 242 / 0.62) 0 1px, transparent 2px),
-    radial-gradient(circle at 9% 52%, rgb(247 247 242 / 0.5) 0 1px, transparent 2px),
-    radial-gradient(circle at 19% 28%, rgb(247 247 242 / 0.45) 0 1px, transparent 2px),
-    radial-gradient(circle at 28% 70%, rgb(247 247 242 / 0.55) 0 1px, transparent 2px),
-    radial-gradient(circle at 38% 19%, rgb(247 247 242 / 0.5) 0 1px, transparent 2px),
-    radial-gradient(circle at 47% 63%, rgb(247 247 242 / 0.62) 0 1px, transparent 2px),
-    radial-gradient(circle at 56% 34%, rgb(247 247 242 / 0.45) 0 1px, transparent 2px),
-    radial-gradient(circle at 67% 78%, rgb(247 247 242 / 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 78% 26%, rgb(247 247 242 / 0.55) 0 1px, transparent 2px),
-    radial-gradient(circle at 89% 57%, rgb(247 247 242 / 0.6) 0 1px, transparent 2px),
-    radial-gradient(circle at 97% 20%, rgb(247 247 242 / 0.45) 0 1px, transparent 2px),
-    linear-gradient(28deg, transparent 22%, rgb(181 181 174 / 0.13) 22.1%, transparent 22.25%),
-    linear-gradient(142deg, transparent 38%, rgb(181 181 174 / 0.13) 38.1%, transparent 38.25%),
-    linear-gradient(68deg, transparent 63%, rgb(181 181 174 / 0.12) 63.1%, transparent 63.25%),
-    linear-gradient(166deg, transparent 79%, rgb(181 181 174 / 0.11) 79.1%, transparent 79.25%);
+    /* Deep Space Nebulas */
+    radial-gradient(circle at 15% 25%, rgb(105 173 63 / 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 75% 65%, rgb(40 120 200 / 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 85%, rgb(150 40 200 / 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgb(105 173 63 / 0.04) 0%, transparent 35%),
+    
+    /* Distant Star Clusters (Base) */
+    radial-gradient(circle at 12% 17%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
+    radial-gradient(circle at 39% 52%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 19% 28%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 28% 70%, rgb(105 173 63 / 0.9) 0 2.5px, transparent 4px),
+    radial-gradient(circle at 38% 19%, rgb(255 255 255 / 0.7) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 47% 63%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
+    radial-gradient(circle at 56% 34%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 67% 88%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 26%, rgb(105 173 63 / 0.8) 0 2.5px, transparent 4px),
+    radial-gradient(circle at 89% 57%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
+    radial-gradient(circle at 97% 20%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px),
+    
+    /* New Stars added */
+    radial-gradient(circle at 5% 85%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 15% 95%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 25% 45%, rgb(105 173 63 / 0.9) 0 1.5px, transparent 3px),
+    radial-gradient(circle at 45% 12%, rgb(255 255 255 / 1) 0 2.5px, transparent 4px),
+    radial-gradient(circle at 65% 42%, rgb(255 255 255 / 0.7) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 85% 12%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
+    radial-gradient(circle at 92% 75%, rgb(105 173 63 / 0.9) 0 1.5px, transparent 3px),
+    radial-gradient(circle at 55% 82%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px),
+
+    /* Dense Starfield Addition (Trimmed) */
+    radial-gradient(circle at 3% 30%, rgb(255 255 255 / 1) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 88% 85%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
+    
+    /* Curvy Orbital and Constellation lines */
+    radial-gradient(circle at 110% 110%, transparent 75%, rgb(181 181 174 / 0.15) 75.1%, transparent 75.25%),
+    radial-gradient(circle at -20% 40%, transparent 50%, rgb(105 173 63 / 0.12) 50.1%, transparent 50.25%),
+    radial-gradient(circle at 10% 130%, transparent 55%, rgb(181 181 174 / 0.12) 55.1%, transparent 55.25%),
+    linear-gradient(28deg, transparent 32%, rgb(181 181 174 / 0.08) 32.1%, transparent 32.25%);
 }
 
-.closing-field::after {
-  background: radial-gradient(ellipse at 50% 60%, transparent 5%, rgb(0 0 0 / 0.36) 68%, rgb(0 0 0 / 0.82) 100%);
+.abstract-field::after {
+  background: radial-gradient(ellipse at 50% 60%, transparent 5%, rgb(0 0 0 / 0.4) 68%, rgb(0 0 0 / 0.9) 100%);
 }
 
 .terminal-section::before {
@@ -399,11 +442,22 @@
 
 
 @media (pointer: fine) and (min-width: 768px) {
-  body,
+  body {
+    cursor: none;
+  }
+  
   a,
   button,
-  summary {
-    cursor: none;
+  summary,
+  [role="button"],
+  input,
+  textarea,
+  select {
+    cursor: pointer;
+  }
+
+  [role="slider"] {
+    cursor: ew-resize !important;
   }
 }
 

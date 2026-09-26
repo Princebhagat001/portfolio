@@ -14,7 +14,7 @@ const exploreLinks = [
 function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer id="closing" className="closing-field relative isolate min-h-[780px] overflow-hidden bg-black pt-12 sm:pt-16" aria-label="Site footer">
+    <footer id="closing" className="abstract-field relative isolate min-h-[780px] overflow-hidden bg-black pt-12 sm:pt-16" aria-label="Site footer">
       <div className="relative z-10 mx-auto max-w-[1380px] border-t border-white/10 px-5 pt-14 sm:px-8 sm:pt-18 lg:px-12 lg:pt-20">
         <div className="grid gap-14 lg:grid-cols-[1.55fr_0.7fr_0.7fr] lg:gap-20">
           <section className="max-w-md" aria-label={`About ${personal.fullName}`}>
