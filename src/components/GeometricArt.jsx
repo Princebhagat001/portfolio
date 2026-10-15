@@ -2,30 +2,65 @@ import React, { useState, useEffect, useRef } from 'react';
 
 export default function GeometricArt() {
   const containerRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [scrollY, setScrollY] = useState(0);
+  const artRef = useRef(null);
+  const frameRef = useRef(0);
 
   const [flares, setFlares] = useState([]);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setMousePos({ x, y });
+    const root = containerRef.current;
+    const art = artRef.current;
+    if (!root || !art) return;
+
+    let pointerX = 0;
+    let pointerY = 0;
+    let latestScrollY = window.scrollY;
+
+    // Keep high-frequency input out of React's render cycle and write at most once per frame.
+    const scheduleUpdate = () => {
+      if (frameRef.current) return;
+      frameRef.current = window.requestAnimationFrame(() => {
+        frameRef.current = 0;
+        [25, 20, -15, -5, 10, 15, 5].forEach((scale) => {
+          root.style.setProperty(`--pointer-x-${scale}`, `${pointerX * scale}px`);
+          root.style.setProperty(`--pointer-y-${scale}`, `${pointerY * scale}px`);
+        });
+        art.style.transform = `translateY(${latestScrollY * 0.6}px) rotate(${latestScrollY * 0.05}deg)`;
+      });
+    };
+
+    const handlePointerMove = (e) => {
+      const rect = root.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      pointerX = (e.clientX - rect.left) / rect.width - 0.5;
+      pointerY = (e.clientY - rect.top) / rect.height - 0.5;
+      scheduleUpdate();
     };
 
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      latestScrollY = window.scrollY;
+      scheduleUpdate();
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    root.addEventListener('pointermove', handlePointerMove, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
+    let observer;
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(([entry]) => {
+        root.dataset.visible = String(entry.isIntersecting);
+      });
+      observer.observe(root);
+    } else {
+      root.dataset.visible = 'true';
+    }
+    scheduleUpdate();
+
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      root.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('scroll', handleScroll);
+      observer?.disconnect();
+      if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
@@ -40,7 +75,8 @@ export default function GeometricArt() {
 
   return (
     <div 
-      className="relative w-full max-w-[500px] aspect-square flex items-center justify-center group mx-auto mix-blend-screen z-[0] cursor-pointer animate-[art-color-shift_12s_linear_infinite]"
+      ref={containerRef}
+      className="geometric-art relative w-full max-w-[500px] aspect-square flex items-center justify-center group mx-auto mix-blend-screen z-[0] cursor-pointer animate-[art-color-shift_12s_linear_infinite]"
       onClick={handleClick}
     >
       {/* Flare Container fixed to screen so flares don't get clipped by parallax containers */}
@@ -68,17 +104,17 @@ export default function GeometricArt() {
       )}
 
       <div 
-        ref={containerRef}
+        ref={artRef}
         className="absolute w-full h-full flex items-center justify-center animate-[slideInLeftItem_1s_ease-out_forwards] opacity-0"
         style={{
-          transform: `translateY(${scrollY * 0.6}px) rotate(${scrollY * 0.05}deg)`,
+          transform: 'translateY(0) rotate(0deg)',
           transition: 'transform 0.1s ease-out'
         }}
       >
         {/* Outermost Faint Dashed Ring */}
       <div 
         className="absolute w-[115%] h-[115%] rounded-full border border-dashed border-[var(--portfolio-grey)]/10 transition-transform duration-100 ease-out"
-        style={{ transform: `rotateX(45deg) rotateY(-10deg) translate(${mousePos.x * 25}px, ${mousePos.y * 25}px)` }}
+        style={{ transform: 'rotateX(45deg) rotateY(-10deg) translate(var(--pointer-x-25, 0px), var(--pointer-y-25, 0px))' }}
       >
         <div className="absolute w-full h-full animate-[spin_40s_linear_infinite]"></div>
       </div>
@@ -86,7 +122,7 @@ export default function GeometricArt() {
       {/* Outer Orbit */}
       <div 
         className="absolute w-[100%] h-[100%] rounded-full border art-border-10 transition-transform duration-100 ease-out"
-        style={{ transform: `rotateX(40deg) rotateY(15deg) translate(${mousePos.x * 20}px, ${mousePos.y * 20}px)` }}
+        style={{ transform: 'rotateX(40deg) rotateY(15deg) translate(var(--pointer-x-20, 0px), var(--pointer-y-20, 0px))' }}
       >
         <div className="absolute w-full h-full animate-[spin_25s_linear_infinite]">
           <div className="absolute -top-2 left-1/2 w-4 h-4 rounded-full art-bg-80 art-shadow-15"></div>
@@ -97,7 +133,7 @@ export default function GeometricArt() {
       {/* Scanning Radar Layer */}
       <div 
         className="absolute w-[85%] h-[85%] rounded-full border border-[var(--portfolio-grey)]/20 transition-transform duration-100 ease-out" 
-        style={{ transform: `rotateX(60deg) rotateY(20deg) translate(${mousePos.x * -15}px, ${mousePos.y * -15}px)` }}
+        style={{ transform: 'rotateX(60deg) rotateY(20deg) translate(var(--pointer-x--15, 0px), var(--pointer-y--15, 0px))' }}
       >
         <div 
           className="absolute inset-0 rounded-full animate-[radar-scan_4s_linear_infinite]"
@@ -112,7 +148,7 @@ export default function GeometricArt() {
       {/* Fast Dashed Middle Ring */}
       <div 
         className="absolute w-[72%] h-[72%] rounded-full border-2 border-dashed art-border-15 transition-transform duration-100 ease-out" 
-        style={{ transform: `rotateX(20deg) rotateY(-30deg) translate(${mousePos.x * -5}px, ${mousePos.y * -5}px)` }}
+        style={{ transform: 'rotateX(20deg) rotateY(-30deg) translate(var(--pointer-x--5, 0px), var(--pointer-y--5, 0px))' }}
       >
         <div className="absolute w-full h-full animate-[spin_8s_linear_infinite]">
            <div className="absolute top-0 right-1/4 w-2 h-2 rounded-full art-bg-50"></div>
@@ -122,7 +158,7 @@ export default function GeometricArt() {
       {/* Inner Orbit */}
       <div 
         className="absolute w-[60%] h-[60%] rounded-full border art-border-20 transition-transform duration-100 ease-out" 
-        style={{ transform: `rotateX(30deg) rotateY(60deg) translate(${mousePos.x * 10}px, ${mousePos.y * 10}px)` }}
+        style={{ transform: 'rotateX(30deg) rotateY(60deg) translate(var(--pointer-x-10, 0px), var(--pointer-y-10, 0px))' }}
       >
         <div className="absolute w-full h-full animate-[spin_10s_linear_infinite]">
           <div className="absolute -top-1.5 left-1/4 w-3 h-3 rounded-full bg-[var(--portfolio-white)]/90 shadow-[0_0_10px_var(--portfolio-white)]"></div>
@@ -132,7 +168,7 @@ export default function GeometricArt() {
       {/* Deep Inner Delicate Ring */}
       <div 
         className="absolute w-[40%] h-[40%] rounded-full border border-[var(--portfolio-grey)]/15 transition-transform duration-100 ease-out" 
-        style={{ transform: `rotateX(50deg) rotateY(-10deg) translate(${mousePos.x * 15}px, ${mousePos.y * 15}px)` }}
+        style={{ transform: 'rotateX(50deg) rotateY(-10deg) translate(var(--pointer-x-15, 0px), var(--pointer-y-15, 0px))' }}
       >
         <div className="absolute w-full h-full animate-[spin_12s_linear_infinite_reverse]">
           <div className="absolute bottom-0 left-1/2 w-1.5 h-1.5 rounded-full bg-[var(--portfolio-white)]/50"></div>
@@ -142,7 +178,7 @@ export default function GeometricArt() {
       {/* Central Morphing Polygon */}
       <div 
         className="absolute w-[18%] h-[18%] border animate-[morph-polygon_12s_linear_infinite] group-hover:shadow-[0_0_40px_currentColor] transition-all duration-500 flex items-center justify-center backdrop-blur-sm z-10"
-        style={{ transform: `translate(${mousePos.x * 5}px, ${mousePos.y * 5}px)` }}
+        style={{ transform: 'translate(var(--pointer-x-5, 0px), var(--pointer-y-5, 0px))' }}
       >
         <div className="w-3 h-3 bg-current rounded-full animate-pulse shadow-[0_0_20px_currentColor]"></div>
       </div>

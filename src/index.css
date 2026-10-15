@@ -149,6 +149,24 @@
 .art-shadow-40 { box-shadow: 0 0 40px currentColor; }
 .art-gradient-line { background: linear-gradient(to right, transparent, color-mix(in srgb, currentColor 15%, transparent), transparent); }
 
+/* Pause the decorative motion when the Hero art is outside the viewport. */
+.geometric-art:not([data-visible='true']) *,
+.geometric-art:not([data-visible='true']) *::before,
+.geometric-art:not([data-visible='true']) *::after {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geometric-art *,
+  .geometric-art *::before,
+  .geometric-art *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 
 /* The large name is one shared wordmark treatment: broad, geometric curves,
    crisp diagonal cuts, and deliberately tight editorial spacing. */
