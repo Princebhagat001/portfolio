@@ -15,6 +15,7 @@ export default function GeometricArt() {
     let pointerX = 0;
     let pointerY = 0;
     let latestScrollY = window.scrollY;
+    let isVisible = false;
 
     // Keep high-frequency input out of React's render cycle and write at most once per frame.
     const scheduleUpdate = () => {
@@ -38,6 +39,7 @@ export default function GeometricArt() {
     };
 
     const handleScroll = () => {
+      if (!isVisible) return;
       latestScrollY = window.scrollY;
       scheduleUpdate();
     };
@@ -48,10 +50,16 @@ export default function GeometricArt() {
     let observer;
     if ('IntersectionObserver' in window) {
       observer = new IntersectionObserver(([entry]) => {
-        root.dataset.visible = String(entry.isIntersecting);
+        isVisible = entry.isIntersecting;
+        root.dataset.visible = String(isVisible);
+        if (isVisible) {
+          latestScrollY = window.scrollY;
+          scheduleUpdate();
+        }
       });
       observer.observe(root);
     } else {
+      isVisible = true;
       root.dataset.visible = 'true';
     }
     scheduleUpdate();

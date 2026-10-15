@@ -156,6 +156,10 @@
   animation-play-state: paused !important;
 }
 
+.geometric-art:not([data-visible='true']) {
+  animation-play-state: paused !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .geometric-art *,
   .geometric-art *::before,
@@ -229,7 +233,13 @@
 
 .abstract-field {
   overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
 }
+
+#projects { contain-intrinsic-size: auto 1500px; }
+#certificates { contain-intrinsic-size: auto 1800px; }
+#contact { content-visibility: auto; contain-intrinsic-size: auto 1100px; }
 
 .abstract-field::before,
 .abstract-field::after {
@@ -457,6 +467,37 @@
 .social-rail-link:hover, .social-rail-link:focus-visible { width: 7rem; border-color: var(--portfolio-green); background: rgb(105 173 63 / 0.12); box-shadow: 0 0 23px rgb(105 173 63 / 0.28); transform: translateX(4px) scale(1.04); }
 .social-rail-link:focus-visible { outline: 2px solid var(--portfolio-green); outline-offset: 3px; }
 @media (min-width: 1280px) { .social-rail { display: grid; } }
+
+/* Keep the mobile scroll path light: use a static starfield and avoid large
+   blur/backdrop-filter surfaces that are costly to composite on phones. */
+@media (max-width: 767px) {
+  .abstract-field::before {
+    animation: none;
+    backface-visibility: visible;
+    transform: none;
+    will-change: auto;
+  }
+
+  [class*='backdrop-blur'] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  #projects .blur-3xl {
+    filter: none;
+    opacity: 0.2;
+  }
+
+  .geometric-art,
+  .geometric-art * {
+    animation-play-state: paused !important;
+  }
+
+  /* Let the entrance animation finish so the static graphic remains visible. */
+  .geometric-art [class*='slideInLeftItem'] {
+    animation-play-state: running !important;
+  }
+}
 
 
 @media (pointer: fine) and (min-width: 768px) {
