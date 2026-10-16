@@ -40,7 +40,7 @@ function Education() {
             <li 
               key={item.institution} 
               className={`education-card ${item.current ? 'education-card-current' : ''} ${openInstitution === item.institution ? 'education-card-open' : ''} ${isVisible ? 'animate-[slideUpFade_0.8s_ease-out_forwards]' : 'opacity-0'}`}
-              style={{ animationDelay: `${200 + (index * 150)}ms` }}
+              style={{ animationDelay: `${200 + (index * 150)}ms`, '--mobile-reveal-delay': `${index * 35}ms` }}
             >
               <span className="education-marker" aria-hidden="true" />
               <button type="button" className="education-summary" aria-expanded={openInstitution === item.institution} onClick={() => setOpenInstitution(openInstitution === item.institution ? null : item.institution)}>

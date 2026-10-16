@@ -73,6 +73,9 @@ export default function GeometricArt() {
   }, []);
 
   const handleClick = (e) => {
+    // Taps on phones should interact with the page without spawning a flare.
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     const id = Date.now();
     // We want the flare to originate where the mouse clicked relative to the screen
     setFlares(prev => [...prev, { id, x: e.clientX, y: e.clientY }]);

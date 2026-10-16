@@ -57,8 +57,8 @@ function Certificates() {
           {certifications.map((cert, index) => (
             <div 
               key={cert.id} 
-              className={`group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0a0a0a] p-5 transition-colors duration-300 hover:border-[var(--portfolio-green)]/50 hover:bg-[#111] ${isVisible ? 'animate-[slideUpFade_0.8s_ease-out_forwards]' : 'opacity-0'}`}
-              style={{ animationDelay: `${200 + (index * 100)}ms` }}
+              className={`certificate-card group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0a0a0a] p-5 transition-colors duration-300 hover:border-[var(--portfolio-green)]/50 hover:bg-[#111] ${isVisible ? 'animate-[slideUpFade_0.8s_ease-out_forwards]' : 'opacity-0'}`}
+              style={{ animationDelay: `${200 + (index * 100)}ms`, '--mobile-reveal-delay': `${index * 35}ms` }}
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#0a0a0a] flex flex-col justify-center items-center text-center border border-white/5">
                 {cert.image ? (

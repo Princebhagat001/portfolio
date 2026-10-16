@@ -84,9 +84,10 @@ function SkillCard({ skill, index, isVisible }) {
 
   return (
     <div 
-      className="flex flex-col group p-4 sm:p-5 -mx-4 sm:-mx-5 rounded-2xl transition-all duration-300 hover:bg-white/[0.02] hover:-translate-y-1 hover:shadow-[0_10px_30px_-15px_rgba(105,173,63,0.1)]"
+      className="skill-card flex flex-col group p-4 sm:p-5 -mx-4 sm:-mx-5 rounded-2xl transition-all duration-300 hover:bg-white/[0.02] hover:-translate-y-1 hover:shadow-[0_10px_30px_-15px_rgba(105,173,63,0.1)]"
       style={{ 
         transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
+        '--mobile-reveal-delay': `${index * 45}ms`,
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
       }}
@@ -118,7 +119,7 @@ function SkillCard({ skill, index, isVisible }) {
         <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none"></div>
 
         <div 
-          className={`h-full bg-[var(--portfolio-green)] rounded-full relative ${isDragging && !isSnappingBack ? 'transition-none brightness-125' : 'transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_var(--portfolio-green)]'} overflow-hidden`}
+          className={`skill-progress-fill h-full bg-[var(--portfolio-green)] rounded-full relative ${isDragging && !isSnappingBack ? 'transition-none brightness-125' : 'transition-all duration-1000 ease-out group-hover:shadow-[0_0_10px_var(--portfolio-green)]'} overflow-hidden`}
           style={{ width: `${currentPercentage}%` }}
         >
           <div className="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite] -translate-x-full" style={{ backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)' }}></div>

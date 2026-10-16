@@ -474,10 +474,13 @@
 .social-rail-link:focus-visible { outline: 2px solid var(--portfolio-green); outline-offset: 3px; }
 @media (min-width: 1280px) { .social-rail { display: grid; } }
 
-/* Keep the mobile design intact while slowing and trimming ornamental motion. */
-@media (max-width: 767px) {
+/* Keep the orbital graphic moving on phones, but remove its secondary loops. */
+@media (max-width: 767px), (pointer: coarse) {
   .abstract-field::before {
-    animation-duration: 120s;
+    animation: none;
+    backface-visibility: visible;
+    transform: none;
+    will-change: auto;
   }
 
   .geometric-art {
@@ -517,6 +520,32 @@
 
   #skills [class*='shimmer_2s_infinite'] {
     animation-play-state: paused !important;
+  }
+
+  /* Keep section reveals, but make them brief, subtle, and less staggered. */
+  #skills .skill-card {
+    transition: opacity 280ms ease-out, transform 280ms ease-out !important;
+    transition-delay: var(--mobile-reveal-delay) !important;
+  }
+
+  #experience [style*='opacity'],
+  #projects [style*='opacity'],
+  #education [style*='opacity'],
+  #certificates [style*='opacity'] {
+    transition: opacity 320ms ease-out, transform 320ms ease-out !important;
+    transition-delay: 50ms !important;
+  }
+
+  #education .education-card[class*='slideUpFade'],
+  #certificates .certificate-card[class*='slideUpFade'] {
+    animation-name: compact-mobile-reveal !important;
+    animation-duration: 360ms !important;
+    animation-delay: var(--mobile-reveal-delay) !important;
+  }
+
+  @keyframes compact-mobile-reveal {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
 
