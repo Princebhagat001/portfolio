@@ -41,6 +41,25 @@ function App() {
     return () => window.removeEventListener('hashchange', checkHash)
   }, [])
 
+  useEffect(() => {
+    const backgrounds = document.querySelectorAll('.abstract-field')
+    if (!('IntersectionObserver' in window)) {
+      backgrounds.forEach((background) => {
+        background.dataset.inView = 'true'
+      })
+      return
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.dataset.inView = String(entry.isIntersecting)
+      })
+    }, { rootMargin: '120px 0px' })
+
+    backgrounds.forEach((background) => observer.observe(background))
+    return () => observer.disconnect()
+  }, [])
+
   if (invalidRoute) {
     return (
       <>

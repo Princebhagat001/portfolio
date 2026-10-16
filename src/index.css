@@ -160,6 +160,18 @@
   animation-play-state: paused !important;
 }
 
+/* Stop the large animated starfield while its section is well outside view. */
+.abstract-field:not([data-in-view='true'])::before {
+  animation-play-state: paused !important;
+}
+
+.abstract-field:not([data-in-view='true']),
+.abstract-field:not([data-in-view='true']) *,
+.abstract-field:not([data-in-view='true']) *::before,
+.abstract-field:not([data-in-view='true']) *::after {
+  animation-play-state: paused !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .geometric-art *,
   .geometric-art *::before,
@@ -233,13 +245,7 @@
 
 .abstract-field {
   overflow: hidden;
-  content-visibility: auto;
-  contain-intrinsic-size: auto 900px;
 }
-
-#projects { contain-intrinsic-size: auto 1500px; }
-#certificates { contain-intrinsic-size: auto 1800px; }
-#contact { content-visibility: auto; contain-intrinsic-size: auto 1100px; }
 
 .abstract-field::before,
 .abstract-field::after {
@@ -468,34 +474,49 @@
 .social-rail-link:focus-visible { outline: 2px solid var(--portfolio-green); outline-offset: 3px; }
 @media (min-width: 1280px) { .social-rail { display: grid; } }
 
-/* Keep the mobile scroll path light: use a static starfield and avoid large
-   blur/backdrop-filter surfaces that are costly to composite on phones. */
+/* Keep the mobile design intact while slowing and trimming ornamental motion. */
 @media (max-width: 767px) {
   .abstract-field::before {
-    animation: none;
-    backface-visibility: visible;
-    transform: none;
-    will-change: auto;
+    animation-duration: 120s;
   }
 
-  [class*='backdrop-blur'] {
-    -webkit-backdrop-filter: none !important;
-    backdrop-filter: none !important;
+  .geometric-art {
+    animation-duration: 20s;
   }
 
-  #projects .blur-3xl {
-    filter: none;
-    opacity: 0.2;
-  }
-
-  .geometric-art,
-  .geometric-art * {
+  /* Keep the main radar and orbital movement, but drop secondary loops. */
+  .geometric-art [class*='spin_40s_linear_infinite'],
+  .geometric-art [class*='spin_15s_linear_infinite_reverse'],
+  .geometric-art [class*='spin_12s_linear_infinite_reverse'] {
     animation-play-state: paused !important;
   }
 
-  /* Let the entrance animation finish so the static graphic remains visible. */
-  .geometric-art [class*='slideInLeftItem'] {
-    animation-play-state: running !important;
+  .geometric-art [class*='spin_25s_linear_infinite'] {
+    animation-duration: 40s;
+  }
+
+  .geometric-art [class*='radar-scan_4s_linear_infinite'] {
+    animation-duration: 6s;
+  }
+
+  .geometric-art [class*='spin_8s_linear_infinite'] {
+    animation-duration: 16s;
+  }
+
+  .geometric-art [class*='spin_10s_linear_infinite'] {
+    animation-duration: 20s;
+  }
+
+  .geometric-art [class*='morph-polygon_12s_linear_infinite'] {
+    animation-duration: 18s;
+  }
+
+  .geometric-art .animate-pulse {
+    animation-duration: 2.4s;
+  }
+
+  #skills [class*='shimmer_2s_infinite'] {
+    animation-play-state: paused !important;
   }
 }
 
