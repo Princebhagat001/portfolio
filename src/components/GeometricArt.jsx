@@ -22,6 +22,7 @@ export default function GeometricArt() {
     let pointerY = 0;
     let latestScrollY = browserWindow.scrollY;
     let isVisible = false;
+    let tracksPointer = false;
     let lastUpdateAt = 0;
     let bounds = root.getBoundingClientRect();
     let throttleTimer = 0;
@@ -66,15 +67,35 @@ export default function GeometricArt() {
 
     const handleResize = () => {
       bounds = root.getBoundingClientRect();
+      const isInViewport = bounds.bottom > 0
+        && bounds.top < browserWindow.innerHeight
+        && bounds.right > 0
+        && bounds.left < browserWindow.innerWidth;
+      if (isInViewport !== isVisible) {
+        isVisible = isInViewport;
+        root.dataset.visible = String(isVisible);
+      }
       scheduleUpdate();
     };
 
-    const hasFinePointer = browserWindow.matchMedia('(pointer: fine)').matches;
-    const tracksPointer = hasFinePointer && !reducedMotion;
+    const finePointer = browserWindow.matchMedia('(pointer: fine)');
+    const syncPointerTracking = () => {
+      const shouldTrackPointer = finePointer.matches && !reducedMotion;
+      if (shouldTrackPointer === tracksPointer) return;
+      tracksPointer = shouldTrackPointer;
+      pointerX = 0;
+      pointerY = 0;
+      if (tracksPointer) {
+        root.addEventListener('pointermove', handlePointerMove, { passive: true });
+      } else {
+        root.removeEventListener('pointermove', handlePointerMove);
+      }
+      scheduleUpdate();
+    };
+    syncPointerTracking();
+    finePointer.addEventListener?.('change', syncPointerTracking);
+    if (!finePointer.addEventListener) finePointer.addListener?.(syncPointerTracking);
     const tracksScroll = !reducedMotion;
-    if (tracksPointer) {
-      root.addEventListener('pointermove', handlePointerMove, { passive: true });
-    }
     if (tracksScroll) {
       browserWindow.addEventListener('scroll', handleScroll, { passive: true });
     }
@@ -106,6 +127,8 @@ export default function GeometricArt() {
       if (tracksPointer) {
         root.removeEventListener('pointermove', handlePointerMove);
       }
+      finePointer.removeEventListener?.('change', syncPointerTracking);
+      if (!finePointer.removeEventListener) finePointer.removeListener?.(syncPointerTracking);
       if (tracksScroll) {
         browserWindow.removeEventListener('scroll', handleScroll);
       }

@@ -4,9 +4,8 @@ function CustomCursor() {
   const cursorRef = useRef(null)
 
   useEffect(() => {
-    const finePointer = window.matchMedia('(pointer: fine) and (min-width: 768px)')
-    if (!finePointer.matches) return
-
+    const browserWindow = globalThis.window
+    const finePointer = browserWindow.matchMedia('(pointer: fine) and (min-width: 768px)')
     let frame = 0
     let pointerX = 0
     let pointerY = 0
@@ -14,7 +13,7 @@ function CustomCursor() {
       pointerX = event.clientX
       pointerY = event.clientY
       if (frame) return
-      frame = window.requestAnimationFrame(() => {
+      frame = browserWindow.requestAnimationFrame(() => {
         frame = 0
         if (cursorRef.current) {
           cursorRef.current.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0) translate(-50%, -50%)`
@@ -22,10 +21,28 @@ function CustomCursor() {
       })
     }
 
-    window.addEventListener('pointermove', moveCursor, { passive: true })
+    const syncPointerListener = () => {
+      if (finePointer.matches) {
+        browserWindow.addEventListener('pointermove', moveCursor, { passive: true })
+      } else {
+        browserWindow.removeEventListener('pointermove', moveCursor)
+        if (frame) browserWindow.cancelAnimationFrame(frame)
+        frame = 0
+        if (cursorRef.current) {
+          cursorRef.current.style.transform = 'translate3d(-100px, -100px, 0) translate(-50%, -50%)'
+        }
+      }
+    }
+
+    syncPointerListener()
+    finePointer.addEventListener?.('change', syncPointerListener)
+    if (!finePointer.addEventListener) finePointer.addListener?.(syncPointerListener)
+
     return () => {
-      window.removeEventListener('pointermove', moveCursor)
-      if (frame) window.cancelAnimationFrame(frame)
+      browserWindow.removeEventListener('pointermove', moveCursor)
+      finePointer.removeEventListener?.('change', syncPointerListener)
+      if (!finePointer.removeEventListener) finePointer.removeListener?.(syncPointerListener)
+      if (frame) browserWindow.cancelAnimationFrame(frame)
     }
   }, [])
 
