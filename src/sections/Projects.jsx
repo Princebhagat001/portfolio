@@ -61,6 +61,7 @@ function Projects() {
                     title="GitHub Contribution Heatmap"
                     className="w-full h-auto brightness-90 contrast-125 hover:brightness-110 transition-all duration-500" 
                     loading="lazy" 
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -77,7 +78,7 @@ function Projects() {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#C0392B]/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-[#C0392B]/20 transition-colors duration-700"></div>
                 <div className="flex items-center justify-between gap-4 mb-6 relative z-10">
                   <h3 className="font-display text-lg font-bold text-white flex items-center gap-3">
-                    <img src="https://tryhackme.com/favicon.ico" alt="TryHackMe Platform Logo" title="TryHackMe" className="w-5 h-5 grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy" />
+                    <img src="https://tryhackme.com/favicon.ico" alt="" title="TryHackMe" width="20" height="20" className="w-5 h-5 grayscale group-hover:grayscale-0 transition-all duration-500" loading="lazy" decoding="async" />
                     TryHackMe
                   </h3>
                   <a href="https://tryhackme.com/p/Princebhagat001?tab=yearly-activity" target="_blank" rel="noopener noreferrer" title="View Prince Bhagat's TryHackMe Stats" aria-label="Navigate to Prince Bhagat's TryHackMe profile and yearly activity" className="text-[10px] font-semibold uppercase tracking-wider text-[#C0392B] opacity-0 group-hover:opacity-100 transition-opacity duration-300">

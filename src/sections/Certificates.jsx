@@ -62,7 +62,7 @@ function Certificates() {
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#0a0a0a] flex flex-col justify-center items-center text-center border border-white/5">
                 {cert.image ? (
-                  <img src={cert.image} alt={`${cert.title} Certificate`} loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg shadow-sm pointer-events-none" />
+                  <img src={cert.image} alt={`${cert.title} Certificate`} width="800" height="566" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-lg shadow-sm pointer-events-none" />
                 ) : (
                   <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">No Image Provided</div>
                 )}

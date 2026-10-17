@@ -4,7 +4,7 @@ import { socials } from '../data/socials'
 
 const socialHandles = {
   GitHub: 'github.com/Princebhagat001',
-  LinkedIn: 'linkedin.com/in/prince-bhagat-247125407',
+  LinkedIn: 'linkedin.com/in/princebhagat0',
   TryHackMe: 'tryhackme.com/p/Princebhagat001',
   Instagram: 'instagram.com/p.rince10',
 }

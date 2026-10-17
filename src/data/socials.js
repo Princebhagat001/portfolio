@@ -6,7 +6,7 @@ export const socials = [
   },
   {
     label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/prince-bhagat-247125407/',
+    href: 'https://www.linkedin.com/in/princebhagat0/',
     external: true,
   },
   {

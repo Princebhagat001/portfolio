@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -158,6 +157,39 @@
 
 .geometric-art:not([data-visible='true']) {
   animation-play-state: paused !important;
+}
+
+/* Lower capability devices keep the core radar and orbital composition while
+   dropping secondary loops and the most expensive decorative effects. */
+.geometric-art[data-quality='low'] [class*='spin_40s_linear_infinite'],
+.geometric-art[data-quality='low'] [class*='spin_15s_linear_infinite_reverse'],
+.geometric-art[data-quality='low'] [class*='spin_12s_linear_infinite_reverse'] {
+  animation-play-state: paused !important;
+}
+
+.geometric-art[data-quality='low'] [class*='radar-scan_4s_linear_infinite'] {
+  animation-duration: 7s;
+}
+
+.geometric-art[data-quality='low'] [class*='morph-polygon_12s_linear_infinite'] {
+  animation-duration: 20s;
+}
+
+.geometric-art[data-quality='low'] .backdrop-blur-sm {
+  backdrop-filter: none;
+}
+
+.geometric-art[data-quality='low'] .group-hover\:shadow-\[0_0_40px_currentColor\] {
+  --tw-shadow: 0 0 #0000;
+  box-shadow: none;
+}
+
+.geometric-art[data-reduced-motion='true'],
+.geometric-art[data-reduced-motion='true'] *,
+.geometric-art[data-reduced-motion='true'] *::before,
+.geometric-art[data-reduced-motion='true'] *::after {
+  animation: none !important;
+  transition: none !important;
 }
 
 /* Stop the large animated starfield while its section is well outside view. */

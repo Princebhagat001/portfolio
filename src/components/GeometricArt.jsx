@@ -1,60 +1,98 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import useGraphicsQuality from '../hooks/useGraphicsQuality';
+
+const POINTER_SCALES = [25, 20, -15, -5, 10, 15, 5];
 
 export default function GeometricArt() {
   const containerRef = useRef(null);
   const artRef = useRef(null);
   const frameRef = useRef(0);
+  const flareTimeoutsRef = useRef(new Map());
 
   const [flares, setFlares] = useState([]);
+  const { quality, settings, reducedMotion } = useGraphicsQuality();
 
   useEffect(() => {
+    const browserWindow = globalThis.window;
     const root = containerRef.current;
     const art = artRef.current;
     if (!root || !art) return;
 
     let pointerX = 0;
     let pointerY = 0;
-    let latestScrollY = window.scrollY;
+    let latestScrollY = browserWindow.scrollY;
     let isVisible = false;
+    let lastUpdateAt = 0;
+    let bounds = root.getBoundingClientRect();
+    let throttleTimer = 0;
 
     // Keep high-frequency input out of React's render cycle and write at most once per frame.
     const scheduleUpdate = () => {
-      if (frameRef.current) return;
-      frameRef.current = window.requestAnimationFrame(() => {
+      if (frameRef.current || throttleTimer || !isVisible) return;
+      frameRef.current = browserWindow.requestAnimationFrame((timestamp) => {
         frameRef.current = 0;
-        [25, 20, -15, -5, 10, 15, 5].forEach((scale) => {
-          root.style.setProperty(`--pointer-x-${scale}`, `${pointerX * scale}px`);
-          root.style.setProperty(`--pointer-y-${scale}`, `${pointerY * scale}px`);
+        const interval = 1000 / settings.fps;
+        const elapsed = timestamp - lastUpdateAt;
+        if (lastUpdateAt && elapsed < interval) {
+          throttleTimer = browserWindow.setTimeout(() => {
+            throttleTimer = 0;
+            scheduleUpdate();
+          }, interval - elapsed);
+          return;
+        }
+        lastUpdateAt = timestamp;
+        POINTER_SCALES.forEach((scale) => {
+          const movement = reducedMotion ? 0 : settings.pointerStrength;
+          root.style.setProperty(`--pointer-x-${scale}`, `${pointerX * scale * movement}px`);
+          root.style.setProperty(`--pointer-y-${scale}`, `${pointerY * scale * movement}px`);
         });
-        art.style.transform = `translateY(${latestScrollY * 0.6}px) rotate(${latestScrollY * 0.05}deg)`;
+        const scrollStrength = reducedMotion ? 0 : settings.scrollStrength;
+        art.style.transform = `translateY(${latestScrollY * scrollStrength}px) rotate(${latestScrollY * scrollStrength * (0.05 / 0.6)}deg)`;
       });
     };
 
     const handlePointerMove = (e) => {
-      const rect = root.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      pointerX = (e.clientX - rect.left) / rect.width - 0.5;
-      pointerY = (e.clientY - rect.top) / rect.height - 0.5;
+      if (reducedMotion || !bounds.width || !bounds.height) return;
+      pointerX = (e.clientX - bounds.left) / bounds.width - 0.5;
+      pointerY = (e.clientY - bounds.top) / bounds.height - 0.5;
       scheduleUpdate();
     };
 
     const handleScroll = () => {
       if (!isVisible) return;
-      latestScrollY = window.scrollY;
+      latestScrollY = browserWindow.scrollY;
       scheduleUpdate();
     };
 
-    root.addEventListener('pointermove', handlePointerMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    const handleResize = () => {
+      bounds = root.getBoundingClientRect();
+      scheduleUpdate();
+    };
+
+    const hasFinePointer = browserWindow.matchMedia('(pointer: fine)').matches;
+    const tracksPointer = hasFinePointer && !reducedMotion;
+    const tracksScroll = !reducedMotion;
+    if (tracksPointer) {
+      root.addEventListener('pointermove', handlePointerMove, { passive: true });
+    }
+    if (tracksScroll) {
+      browserWindow.addEventListener('scroll', handleScroll, { passive: true });
+    }
+    browserWindow.addEventListener('resize', handleResize, { passive: true });
 
     let observer;
-    if ('IntersectionObserver' in window) {
-      observer = new IntersectionObserver(([entry]) => {
+    if (typeof globalThis.IntersectionObserver === 'function') {
+      observer = new globalThis.IntersectionObserver(([entry]) => {
         isVisible = entry.isIntersecting;
         root.dataset.visible = String(isVisible);
         if (isVisible) {
-          latestScrollY = window.scrollY;
+          latestScrollY = browserWindow.scrollY;
           scheduleUpdate();
+        } else {
+          if (frameRef.current) browserWindow.cancelAnimationFrame(frameRef.current);
+          frameRef.current = 0;
+          if (throttleTimer) browserWindow.clearTimeout(throttleTimer);
+          throttleTimer = 0;
         }
       });
       observer.observe(root);
@@ -65,29 +103,53 @@ export default function GeometricArt() {
     scheduleUpdate();
 
     return () => {
-      root.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('scroll', handleScroll);
+      if (tracksPointer) {
+        root.removeEventListener('pointermove', handlePointerMove);
+      }
+      if (tracksScroll) {
+        browserWindow.removeEventListener('scroll', handleScroll);
+      }
       observer?.disconnect();
-      if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
+      browserWindow.removeEventListener('resize', handleResize);
+      if (frameRef.current) browserWindow.cancelAnimationFrame(frameRef.current);
+      if (throttleTimer) browserWindow.clearTimeout(throttleTimer);
     };
+  }, [settings, reducedMotion]);
+
+  useEffect(() => () => {
+    flareTimeoutsRef.current.forEach((timeout) => globalThis.window.clearTimeout(timeout));
+    flareTimeoutsRef.current.clear();
   }, []);
 
   const handleClick = (e) => {
     // Taps on phones should interact with the page without spawning a flare.
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    const browserWindow = globalThis.window;
+    if (reducedMotion || browserWindow.matchMedia('(pointer: coarse)').matches) return;
 
-    const id = Date.now();
+    const id = `${Date.now()}-${Math.random()}`;
     // We want the flare to originate where the mouse clicked relative to the screen
-    setFlares(prev => [...prev, { id, x: e.clientX, y: e.clientY }]);
-    setTimeout(() => {
+    if (flareTimeoutsRef.current.size >= settings.maxFlares) {
+      const oldestId = flareTimeoutsRef.current.keys().next().value;
+      browserWindow.clearTimeout(flareTimeoutsRef.current.get(oldestId));
+      flareTimeoutsRef.current.delete(oldestId);
+    }
+    setFlares((prev) => [
+      ...(settings.maxFlares > 1 ? prev.slice(-(settings.maxFlares - 1)) : []),
+      { id, x: e.clientX, y: e.clientY },
+    ]);
+    const timeout = browserWindow.setTimeout(() => {
+      flareTimeoutsRef.current.delete(id);
       setFlares(prev => prev.filter(f => f.id !== id));
     }, 1000);
+    flareTimeoutsRef.current.set(id, timeout);
   };
 
   return (
     <div 
       ref={containerRef}
       className="geometric-art relative w-full max-w-[500px] aspect-square flex items-center justify-center group mx-auto mix-blend-screen z-[0] cursor-pointer animate-[art-color-shift_12s_linear_infinite]"
+      data-quality={quality}
+      data-reduced-motion={reducedMotion}
       onClick={handleClick}
     >
       {/* Flare Container fixed to screen so flares don't get clipped by parallax containers */}
