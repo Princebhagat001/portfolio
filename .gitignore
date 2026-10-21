@@ -1,27 +1,9 @@
-# Dependencies and generated Vite output
 node_modules/
 dist/
 dist-ssr/
 .vite/
+.vercel/
 
-# Local environment configuration
 .env
 .env.*
 !.env.example
-*.local
-
-# Logs and test output
-*.log
-coverage/
-
-# Editor and operating-system files
-.vscode/*
-!.vscode/extensions.json
-.idea/
-.DS_Store
-Thumbs.db
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
