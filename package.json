@@ -10,10 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vercel/og": "^1.0.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-github-calendar": "^5.0.9"
+    "react-github-calendar": "^5.0.9",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

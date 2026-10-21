@@ -1,84 +1,48 @@
-import { createElement as h } from 'react';
-import { ImageResponse } from '@vercel/og';
+import sharp from 'sharp';
 
-const styles = {
-  page: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: 72,
-    color: '#f7f8f6',
-    background:
-      'radial-gradient(circle at 18% 18%, rgba(114,185,67,.2), transparent 30%), radial-gradient(circle at 82% 18%, rgba(69,201,216,.14), transparent 28%), linear-gradient(135deg, #090b10 0%, #11141c 54%, #071318 100%)',
-  },
-  brand: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 16,
-    fontSize: 28,
-    color: '#b5c2c9',
-    letterSpacing: 4,
-  },
-  brandMark: { width: 14, height: 14, borderRadius: 3, background: '#72b943' },
-  content: { display: 'flex', flexDirection: 'column' },
-  name: { fontSize: 78, fontWeight: 800, lineHeight: 1.02, letterSpacing: -2 },
-  accent: { width: 112, height: 5, marginTop: 28, borderRadius: 3, background: '#72b943' },
-  role: { marginTop: 24, fontSize: 38, color: '#80dce5', fontWeight: 600 },
-  description: {
-    marginTop: 24,
-    maxWidth: 900,
-    fontSize: 25,
-    lineHeight: 1.45,
-    color: 'rgba(255,255,255,.74)',
-  },
-  footer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    borderTop: '1px solid rgba(255,255,255,.18)',
-    paddingTop: 24,
-    color: '#aab3ba',
-    fontSize: 18,
-    letterSpacing: 2,
-  },
-};
-
-const image = h(
-  'div',
-  { style: styles.page },
-  h(
-    'div',
-    { style: styles.brand },
-    h('div', { style: styles.brandMark }),
-    'PORTFOLIO',
-  ),
-  h(
-    'div',
-    { style: styles.content },
-    h('div', { style: styles.name }, 'Prince Bhagat'),
-    h('div', { style: styles.accent }),
-    h('div', { style: styles.role }, 'Security Researcher'),
-    h(
-      'div',
-      { style: styles.description },
-      'Exploring cybersecurity, building for the web, and learning through hands-on projects.',
-    ),
-  ),
-  h(
-    'div',
-    { style: styles.footer },
-    h('div', null, 'KATHMANDU, NEPAL'),
-    h('div', null, 'PRINCEBHAGAT.COM.NP'),
-  ),
-);
+const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="greenGlow" cx="18%" cy="18%" r="42%">
+      <stop offset="0" stop-color="#72b943" stop-opacity=".2" />
+      <stop offset="1" stop-color="#72b943" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="cyanGlow" cx="82%" cy="18%" r="40%">
+      <stop offset="0" stop-color="#45c9d8" stop-opacity=".14" />
+      <stop offset="1" stop-color="#45c9d8" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090b10" />
+      <stop offset=".54" stop-color="#11141c" />
+      <stop offset="1" stop-color="#071318" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)" />
+  <rect width="1200" height="630" fill="url(#greenGlow)" />
+  <rect width="1200" height="630" fill="url(#cyanGlow)" />
+  <g font-family="Arial, Helvetica, sans-serif">
+    <circle cx="92" cy="90" r="8" fill="#72b943" />
+    <text x="118" y="100" fill="#b5c2c9" font-size="28" letter-spacing="4">PORTFOLIO</text>
+    <text x="72" y="330" fill="#f7f8f6" font-size="78" font-weight="700" letter-spacing="-2">Prince Bhagat</text>
+    <rect x="74" y="366" width="112" height="5" rx="3" fill="#72b943" />
+    <text x="72" y="438" fill="#80dce5" font-size="38" font-weight="600">Security Researcher</text>
+    <text x="72" y="492" fill="#ffffff" fill-opacity=".74" font-size="25">
+      <tspan x="72" dy="0">Exploring cybersecurity, building for the web, and learning through</tspan>
+      <tspan x="72" dy="36">hands-on projects.</tspan>
+    </text>
+    <path d="M72 556H1128" stroke="#ffffff" stroke-opacity=".18" />
+    <text x="72" y="598" fill="#aab3ba" font-size="18" letter-spacing="2">KATHMANDU, NEPAL</text>
+    <text x="1128" y="598" text-anchor="end" fill="#aab3ba" font-size="18" letter-spacing="2">PRINCEBHAGAT.COM.NP</text>
+  </g>
+</svg>`;
 
 export default {
-  fetch() {
-    return new ImageResponse(image, {
-      width: 1200,
-      height: 630,
+  async fetch() {
+    const png = await sharp(new globalThis.TextEncoder().encode(svg)).png().toBuffer();
+
+    return new globalThis.Response(png, {
       headers: {
+        'Content-Type': 'image/png',
         'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
       },
     });
