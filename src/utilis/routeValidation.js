@@ -1,7 +1,6 @@
 const validSections = new Set([
   '',
   'home',
-  'about',
   'skills',
   'experience',
   'projects',

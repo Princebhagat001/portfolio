@@ -1,24 +1,24 @@
 # Prince Bhagat Portfolio
 
-A responsive, single-page cybersecurity portfolio built with React, Vite, Tailwind CSS, and daisyUI.
+A responsive, single-page portfolio built with React and Vite. It presents cybersecurity learning, skills, projects and platform activity, education, certificates, and contact links.
 
-## Included sections
+## Features
 
-- Fixed responsive navigation and mobile menu
-- Hero with professional focus controls
-- Education timeline with expandable details
-- Terminal-inspired contact section
-- Closing footer with navigation and verified social links
-- Fixed desktop social/resume rail
-
-The contact form opens the visitor's default email application; no form data is stored by the site.
+- Responsive navigation and mobile menu
+- Hero section with the GeometricArt graphic
+- Skills, experience, projects, education, and certificates sections
+- Contact form that opens the visitor's email application; the site does not submit or store form data
+- Social links and resume links
+- Device-aware graphics quality and reduced-motion handling
+- SEO metadata and Person JSON-LD in `index.html`
+- Sitemap and crawler rules in `public/sitemap.xml` and `public/robots.txt`
+- Generated Open Graph image served by the Vercel function at `/api/og`
 
 ## Tech stack
 
-- React 19
-- Vite 8
-- Tailwind CSS 4
-- daisyUI 5
+- React 19 and Vite 8
+- Tailwind CSS 4 and daisyUI 5
+- Satori and Sharp for the Open Graph image function
 - JavaScript and JSX
 
 ## Run locally
@@ -28,29 +28,30 @@ npm install
 npm run dev
 ```
 
-## Quality checks
+Vite's development server runs the portfolio frontend. The `/api/og` serverless function is configured for Vercel; to run that function locally, use the Vercel CLI with `vercel dev`.
+
+## Checks and production build
 
 ```bash
 npm run lint
 npm run build
 ```
 
-`npm run build` creates a temporary production bundle in `dist/`. It is ignored by Git and should not be edited manually.
+The build creates `dist/`. It is generated output, ignored by Git, and should not be edited manually.
 
-## Content configuration
+## Project structure
 
-Keep personal information centralized rather than duplicating it in components:
+- `src/components/` - reusable interface components
+- `src/sections/` - the page's content sections
+- `src/data/` - personal, social, certificate, and education content
+- `src/hooks/` - device graphics-quality and motion preference handling
+- `src/utilis/` - route validation, motion values, and graphics-quality selection
+- `api/og.js` - Vercel Open Graph image endpoint
+- `api/fonts/` - Open Sans font and its SIL Open Font License, used by the image endpoint
+- `public/` - static images, icons, resume, sitemap, and robots file
 
-- `src/data/personal.js` - identity, title, location, resume path, and professional focus
-- `src/data/socials.js` - external profiles and email link
-- `src/data/education.js` - education records, dates, locations, grades, and expandable details
+Personal details are in `src/data/personal.js`, social profiles in `src/data/socials.js`, education in `src/data/education.js`, and certificate information in `src/data/certifications.js`.
 
-Static assets belong in `public/`:
+## Deployment notes
 
-- `public/resume.pdf` - downloadable CV/resume
-- `public/icons/` - social and resume rail icons
-- `public/images/` - portfolio images reserved for future sections
-
-## SEO
-
-Site metadata lives in `index.html`, including a canonical URL, search description, robots directive, Open Graph tags, Twitter tags, theme color, and JSON-LD person schema.
+Vercel serves the Vite app and the `/api/og` function. `vercel.json` includes the Open Sans font file in that function's deployment bundle. The OG image response is cached by shared caches for one day, with stale content allowed while it refreshes.

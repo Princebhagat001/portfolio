@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import About from './sections/About'
 import CustomCursor from './components/CustomCursor'
 import Contact from './sections/Contact'
 import Education from './sections/Education'
@@ -67,7 +66,6 @@ function App() {
       <SocialRail />
       <main className="overflow-x-hidden">
         <Hero />
-        <About />
         <Skills />
         <Experience />
         <Projects />

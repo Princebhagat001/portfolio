@@ -1,6 +1,11 @@
+import { readFile } from 'node:fs/promises';
+import { createElement as h } from 'react';
 import sharp from 'sharp';
+import satori from 'satori';
 
-const svg = `
+const fontPromise = readFile(new globalThis.URL('./fonts/OpenSans.ttf', import.meta.url));
+
+const backgroundSvg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <radialGradient id="greenGlow" cx="18%" cy="18%" r="42%">
@@ -20,25 +25,133 @@ const svg = `
   <rect width="1200" height="630" fill="url(#background)" />
   <rect width="1200" height="630" fill="url(#greenGlow)" />
   <rect width="1200" height="630" fill="url(#cyanGlow)" />
-  <g font-family="Arial, Helvetica, sans-serif">
-    <circle cx="92" cy="90" r="8" fill="#72b943" />
-    <text x="118" y="100" fill="#b5c2c9" font-size="28" letter-spacing="4">PORTFOLIO</text>
-    <text x="72" y="330" fill="#f7f8f6" font-size="78" font-weight="700" letter-spacing="-2">Prince Bhagat</text>
-    <rect x="74" y="366" width="112" height="5" rx="3" fill="#72b943" />
-    <text x="72" y="438" fill="#80dce5" font-size="38" font-weight="600">Security Researcher</text>
-    <text x="72" y="492" fill="#ffffff" fill-opacity=".74" font-size="25">
-      <tspan x="72" dy="0">Exploring cybersecurity, building for the web, and learning through</tspan>
-      <tspan x="72" dy="36">hands-on projects.</tspan>
-    </text>
-    <path d="M72 556H1128" stroke="#ffffff" stroke-opacity=".18" />
-    <text x="72" y="598" fill="#aab3ba" font-size="18" letter-spacing="2">KATHMANDU, NEPAL</text>
-    <text x="1128" y="598" text-anchor="end" fill="#aab3ba" font-size="18" letter-spacing="2">PRINCEBHAGAT.COM.NP</text>
-  </g>
+  <circle cx="92" cy="90" r="8" fill="#72b943" />
+  <rect x="74" y="366" width="112" height="5" rx="3" fill="#72b943" />
+  <path d="M72 556H1128" stroke="#ffffff" stroke-opacity=".18" />
 </svg>`;
+
+async function createTextSvg() {
+  const font = await fontPromise;
+
+  return satori(
+    h(
+      'div',
+      {
+        style: {
+          position: 'relative',
+          display: 'flex',
+          width: '1200px',
+          height: '630px',
+          fontFamily: 'Open Sans',
+          color: '#f7f8f6',
+        },
+      },
+      h(
+        'div',
+        {
+          style: {
+            position: 'absolute',
+            left: 118,
+            top: 72,
+            fontSize: 28,
+            fontWeight: 400,
+            letterSpacing: 4,
+            color: '#b5c2c9',
+          },
+        },
+        'PORTFOLIO',
+      ),
+      h(
+        'div',
+        {
+          style: {
+            position: 'absolute',
+            left: 72,
+            top: 232,
+            fontSize: 78,
+            fontWeight: 700,
+            lineHeight: 1.02,
+            letterSpacing: -2,
+          },
+        },
+        'Prince Bhagat',
+      ),
+      h(
+        'div',
+        {
+          style: {
+            position: 'absolute',
+            left: 72,
+            top: 382,
+            fontSize: 38,
+            fontWeight: 600,
+            color: '#80dce5',
+          },
+        },
+        'Security Researcher',
+      ),
+      h(
+        'div',
+        {
+          style: {
+            position: 'absolute',
+            left: 72,
+            top: 452,
+            width: 1000,
+            display: 'flex',
+            flexDirection: 'column',
+            fontSize: 25,
+            lineHeight: 1.45,
+            color: 'rgba(255,255,255,.74)',
+          },
+        },
+        h('div', null, 'Exploring cybersecurity, building for the web, and learning through'),
+        h('div', null, 'hands-on projects.'),
+      ),
+      h(
+        'div',
+        {
+          style: {
+            position: 'absolute',
+            left: 72,
+            top: 572,
+            fontSize: 18,
+            letterSpacing: 2,
+            color: '#aab3ba',
+          },
+        },
+        'KATHMANDU, NEPAL',
+      ),
+      h(
+        'div',
+        {
+          style: {
+            position: 'absolute',
+            right: 72,
+            top: 572,
+            fontSize: 18,
+            letterSpacing: 2,
+            color: '#aab3ba',
+          },
+        },
+        'PRINCEBHAGAT.COM.NP',
+      ),
+    ),
+    {
+      width: 1200,
+      height: 630,
+      fonts: [{ name: 'Open Sans', data: font, weight: 400, style: 'normal' }],
+    },
+  );
+}
 
 export default {
   async fetch() {
-    const png = await sharp(new globalThis.TextEncoder().encode(svg)).png().toBuffer();
+    const textSvg = await createTextSvg();
+    const png = await sharp(globalThis.Buffer.from(backgroundSvg))
+      .composite([{ input: globalThis.Buffer.from(textSvg) }])
+      .png()
+      .toBuffer();
 
     return new globalThis.Response(png, {
       headers: {

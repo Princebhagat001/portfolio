@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function NotFound({ route, onReturn }) {
   const [text, setText] = useState('');

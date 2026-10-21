@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/og.js": {
+      "includeFiles": "api/fonts/OpenSans.ttf"
+    }
+  },
   "rewrites": [
     {
       "source": "/",

@@ -13,6 +13,14 @@ export default [
       parserOptions: { ecmaFeatures: { jsx: true } },
       globals: {
         document: 'readonly',
+        window: 'readonly',
+        IntersectionObserver: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
       },
     },
     plugins: {

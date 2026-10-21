@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import ScrollIndicator from '../components/ScrollIndicator'
 import GeometricArt from '../components/GeometricArt'

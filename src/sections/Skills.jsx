@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { revealStyle, viewportOnce } from '../utilis/motion'
 
 const skillsData = [
@@ -10,6 +10,19 @@ const skillsData = [
   { name: 'Git & GitHub', percentage: 40, tags: ['Intermediate', 'Version Control'] },
   { name: 'AWS EC2', percentage: 25, tags: ['Beginner', 'Cloud Service'] }
 ]
+
+const hackedSwarm = Array.from({ length: 8 }, (_, index) => {
+  const color = index % 2 === 0 ? 'var(--portfolio-green)' : '#ff2a2a'
+
+  return {
+    color,
+    left: 10 + ((index * 37) % 80),
+    top: 10 + ((index * 53) % 80),
+    duration: 0.3 + (index % 5) * 0.1,
+    delay: (index % 4) * 0.1,
+    value: index % 2 === 0 ? '1' : '0',
+  }
+})
 
 function SkillCard({ skill, index, isVisible }) {
   const [currentPercentage, setCurrentPercentage] = useState(0);
@@ -23,10 +36,15 @@ function SkillCard({ skill, index, isVisible }) {
 
   // Animate initial percentage when it comes into view, unless we are dragging
   useEffect(() => {
-    if (!isDragging && !isSnappingBack) {
-      setCurrentPercentage(isVisible ? skill.percentage : 0);
-      prevPercentRef.current = isVisible ? skill.percentage : 0;
-    }
+    if (isDragging || isSnappingBack) return undefined;
+
+    const percentage = isVisible ? skill.percentage : 0;
+    const frame = requestAnimationFrame(() => {
+      setCurrentPercentage(percentage);
+      prevPercentRef.current = percentage;
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [isVisible, skill.percentage, isDragging, isSnappingBack]);
 
   const updatePercentageFromEvent = useCallback((e) => {
@@ -152,26 +170,22 @@ function SkillCard({ skill, index, isVisible }) {
             className={`absolute top-1/2 -translate-y-1/2 z-20 pointer-events-none w-20 h-20 -translate-x-10 ${isSnappingBack ? 'transition-all duration-1000 ease-out' : 'transition-none'}`}
             style={{ left: `${currentPercentage}%` }}
           >
-            {Array.from({ length: 8 }).map((_, i) => {
-              const colors = ['var(--portfolio-green)', '#ff2a2a'];
-              const color = colors[Math.floor(Math.random() * colors.length)];
-              return (
+            {hackedSwarm.map((bit, index) => (
                 <span 
-                  key={i} 
+                  key={index}
                   className="absolute font-mono text-[10px] font-black animate-[ping_1s_ease-out_infinite]"
                   style={{
-                    color: color,
-                    left: `${10 + Math.random() * 80}%`,
-                    top: `${10 + Math.random() * 80}%`,
-                    animationDuration: `${0.3 + Math.random() * 0.5}s`,
-                    animationDelay: `${Math.random() * 0.4}s`,
-                    textShadow: `0 0 5px ${color}, 0 0 10px ${color}`
+                    color: bit.color,
+                    left: `${bit.left}%`,
+                    top: `${bit.top}%`,
+                    animationDuration: `${bit.duration}s`,
+                    animationDelay: `${bit.delay}s`,
+                    textShadow: `0 0 5px ${bit.color}, 0 0 10px ${bit.color}`
                   }}
                 >
-                  {Math.random() > 0.5 ? '1' : '0'}
+                  {bit.value}
                 </span>
-              );
-            })}
+            ))}
           </div>
         )}
       </div>
