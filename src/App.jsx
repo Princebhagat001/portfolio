@@ -11,7 +11,7 @@ import Experience from './sections/Experience'
 import Projects from './sections/Projects'
 import SocialRail from './components/SocialRail'
 import NotFound from './components/NotFound'
-import { getInvalidRoute } from './utils/routeValidation'
+import { getInvalidRoute } from './utilis/routeValidation'
 
 function App() {
   const [invalidRoute, setInvalidRoute] = useState(null)

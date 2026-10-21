@@ -554,41 +554,16 @@
     animation-play-state: paused !important;
   }
 
-  /* Keep the reveals, using about 68% of desktop speed on touch devices. */
-  #skills .skill-card {
-    transition: opacity 440ms ease-out, transform 440ms ease-out !important;
-    transition-delay: var(--mobile-reveal-delay) !important;
-  }
+}
 
-  #experience [style*='opacity'] {
-    transition: opacity 740ms ease-out, transform 740ms ease-out !important;
-    transition-delay: 50ms !important;
-  }
-
-  #projects [style*='opacity'] {
-    transition: opacity 1040ms ease-out, transform 1040ms ease-out !important;
-    transition-delay: 50ms !important;
-  }
-
-  #projects header[style*='opacity'],
-  #projects [class*='duration-1000'][style*='opacity'],
-  #education [style*='opacity'],
-  #certificates [style*='opacity'] {
-    transition: opacity 1480ms ease-out, transform 1480ms ease-out !important;
-    transition-delay: 50ms !important;
-  }
-
-  #education .education-card[class*='slideUpFade'],
-  #certificates .certificate-card[class*='slideUpFade'] {
-    animation-name: compact-mobile-reveal !important;
-    animation-duration: 1180ms !important;
-    animation-delay: var(--mobile-reveal-delay) !important;
-  }
-
-  @keyframes compact-mobile-reveal {
-    from { opacity: 0; transform: translateY(26px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* Shared scroll reveal values are supplied by src/utilis/motion.js. */
+.motion-reveal {
+  transition:
+    opacity var(--motion-duration, 700ms) var(--motion-ease, ease-out) var(--motion-delay, 80ms),
+    transform var(--motion-duration, 700ms) var(--motion-ease, ease-out) var(--motion-delay, 80ms),
+    border-color 300ms ease,
+    background-color 300ms ease,
+    box-shadow 300ms ease !important;
 }
 
 

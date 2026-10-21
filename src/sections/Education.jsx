@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { education } from '../data/education'
+import { revealStyle, viewportOnce } from '../utilis/motion'
 
 function Education() {
   const [openInstitution, setOpenInstitution] = useState(null)
@@ -7,14 +8,15 @@ function Education() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    const viewport = viewportOnce()
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          if (viewport.once) observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15, rootMargin: viewport.margin }
     );
     
     if (sectionRef.current) {
@@ -28,8 +30,8 @@ function Education() {
     <section id="education" ref={sectionRef} className="abstract-field isolate relative overflow-hidden border-t border-white/10 bg-[var(--portfolio-black)] py-16 sm:py-24" aria-labelledby="education-heading">
       <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8 lg:px-12">
         <header 
-          className="mx-auto max-w-3xl text-center transition-all duration-1000 ease-out"
-          style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
+          className="motion-reveal mx-auto max-w-3xl text-center transition-all duration-1000 ease-out"
+          style={{ ...revealStyle(), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
         >
           <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--portfolio-green)] mb-4">Education</p>
           <h2 id="education-heading" className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">Building a foundation in <span className="text-[var(--portfolio-green)]">cybersecurity.</span></h2>
@@ -39,8 +41,8 @@ function Education() {
           {education.map((item, index) => (
             <li 
               key={item.institution} 
-              className={`education-card ${item.current ? 'education-card-current' : ''} ${openInstitution === item.institution ? 'education-card-open' : ''} ${isVisible ? 'animate-[slideUpFade_0.8s_ease-out_forwards]' : 'opacity-0'}`}
-              style={{ animationDelay: `${200 + (index * 150)}ms`, '--mobile-reveal-delay': `${index * 35}ms` }}
+              className={`education-card motion-reveal ${item.current ? 'education-card-current' : ''} ${openInstitution === item.institution ? 'education-card-open' : ''}`}
+              style={{ ...revealStyle(index), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
             >
               <span className="education-marker" aria-hidden="true" />
               <button type="button" className="education-summary" aria-expanded={openInstitution === item.institution} onClick={() => setOpenInstitution(openInstitution === item.institution ? null : item.institution)}>

@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { revealStyle, viewportOnce } from '../utilis/motion'
 
 function Projects() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   
   useEffect(() => {
+    const viewport = viewportOnce()
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          if (viewport.once) observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: viewport.margin }
     );
     
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -25,8 +27,8 @@ function Projects() {
         
         {/* Header */}
         <header 
-          className="mb-16 sm:mb-20 transition-all duration-1000 ease-out"
-          style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
+          className="motion-reveal mb-16 sm:mb-20 transition-all duration-1000 ease-out"
+          style={{ ...revealStyle(), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
         >
           <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--portfolio-green)] mb-4">Activity & Projects</p>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
@@ -41,8 +43,8 @@ function Projects() {
             
             {/* 1. GitHub Live Heatmap */}
             <div 
-              className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-6 sm:p-8 backdrop-blur-sm group hover:border-[var(--portfolio-green)]/30 transition-all duration-700 ease-out delay-100"
-              style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
+              className="motion-reveal rounded-2xl border border-white/10 bg-[#0a0a0a] p-6 sm:p-8 backdrop-blur-sm group hover:border-[var(--portfolio-green)]/30 transition-all duration-700 ease-out"
+              style={{ ...revealStyle(1), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
             >
               <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                 <h3 className="font-display text-xl font-bold text-white flex items-center gap-3">
@@ -72,8 +74,8 @@ function Projects() {
               
               {/* TryHackMe Profile */}
               <div 
-                className="rounded-2xl border border-white/5 bg-gradient-to-br from-[#1a0e0e] to-[#0a0a0a] p-6 relative overflow-hidden group hover:border-[#C0392B]/40 hover:shadow-[0_0_30px_rgba(192,57,43,0.1)] transition-all duration-700 ease-out delay-200 flex flex-col h-full"
-                style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
+                className="motion-reveal rounded-2xl border border-white/5 bg-gradient-to-br from-[#1a0e0e] to-[#0a0a0a] p-6 relative overflow-hidden group hover:border-[#C0392B]/40 hover:shadow-[0_0_30px_rgba(192,57,43,0.1)] transition-all duration-700 ease-out flex flex-col h-full"
+                style={{ ...revealStyle(2), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#C0392B]/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-[#C0392B]/20 transition-colors duration-700"></div>
                 <div className="flex items-center justify-between gap-4 mb-6 relative z-10">
@@ -96,8 +98,8 @@ function Projects() {
 
               {/* HackTheBox Profile */}
               <div 
-                className="rounded-2xl border border-white/5 bg-gradient-to-br from-[#111913] to-[#0a0a0a] p-6 relative overflow-hidden group hover:border-[var(--portfolio-green)]/40 hover:shadow-[0_0_30px_rgba(38,166,65,0.1)] transition-all duration-700 ease-out delay-300 flex flex-col h-full"
-                style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
+                className="motion-reveal rounded-2xl border border-white/5 bg-gradient-to-br from-[#111913] to-[#0a0a0a] p-6 relative overflow-hidden group hover:border-[var(--portfolio-green)]/40 hover:shadow-[0_0_30px_rgba(38,166,65,0.1)] transition-all duration-700 ease-out flex flex-col h-full"
+                style={{ ...revealStyle(3), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--portfolio-green)]/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-[var(--portfolio-green)]/20 transition-colors duration-700"></div>
                 <div className="flex items-center justify-between gap-4 mb-6 relative z-10">
@@ -123,8 +125,8 @@ function Projects() {
 
           {/* Right Column: Featured Projects (Spans 1 column on Desktop) */}
           <div 
-            className="lg:col-span-1 flex flex-col gap-4 transition-all duration-1000 ease-out delay-400"
-            style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
+            className="motion-reveal lg:col-span-1 flex flex-col gap-4 transition-all duration-1000 ease-out"
+            style={{ ...revealStyle(4), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
           >
             <div className="flex items-center justify-between mb-2">
               <h3 className="font-display text-xl font-bold text-white">Featured Projects</h3>
@@ -147,7 +149,7 @@ function Projects() {
               </a>
 
               {/* Caesar Cipher */}
-              <a href="https://github.com/Princebhagat001/caesar-cipher" target="_blank" rel="noopener noreferrer" title="View Caesar Cipher repository on GitHub" aria-label="View Caesar Cipher repository on GitHub" className="flex flex-col justify-between rounded-xl border border-white/10 bg-[#0a0a0a] p-5 hover:border-[var(--portfolio-green)]/50 hover:bg-white/[0.02] hover:-translate-y-1 transition-all duration-300 group">
+              <a href="https://github.com/Princebhagat001/CaesarCipher" target="_blank" rel="noopener noreferrer" title="View Caesar Cipher repository on GitHub" aria-label="View Caesar Cipher repository on GitHub" className="flex flex-col justify-between rounded-xl border border-white/10 bg-[#0a0a0a] p-5 hover:border-[var(--portfolio-green)]/50 hover:bg-white/[0.02] hover:-translate-y-1 transition-all duration-300 group">
                 <div>
                   <div className="flex justify-between items-start mb-3">
                     <h4 className="font-bold text-white group-hover:text-[var(--portfolio-green)] transition-colors duration-300">Caesar Cipher</h4>

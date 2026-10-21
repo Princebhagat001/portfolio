@@ -1,19 +1,21 @@
 import { useState, useEffect, useRef } from 'react'
 import certifications from '../data/certifications'
+import { revealStyle, viewportOnce } from '../utilis/motion'
 
 function Certificates() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    const viewport = viewportOnce()
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          if (viewport.once) observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: viewport.margin }
     );
     
     if (sectionRef.current) {
@@ -27,8 +29,8 @@ function Certificates() {
     <section id="certificates" ref={sectionRef} className="abstract-field isolate relative overflow-hidden border-t border-white/10 bg-[var(--portfolio-black)] py-16 sm:py-24">
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <header 
-          className="flex flex-col md:flex-row md:items-center justify-between gap-10 transition-all duration-1000 ease-out"
-          style={{ opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(30px)' }}
+          className="motion-reveal flex flex-col md:flex-row md:items-center justify-between gap-10 transition-all duration-1000 ease-out"
+          style={{ ...revealStyle(), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
         >
           <div className="max-w-2xl">
             <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--portfolio-green)] mb-4">Certificates</p>
@@ -57,8 +59,8 @@ function Certificates() {
           {certifications.map((cert, index) => (
             <div 
               key={cert.id} 
-              className={`certificate-card group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0a0a0a] p-5 transition-colors duration-300 hover:border-[var(--portfolio-green)]/50 hover:bg-[#111] ${isVisible ? 'animate-[slideUpFade_0.8s_ease-out_forwards]' : 'opacity-0'}`}
-              style={{ animationDelay: `${200 + (index * 100)}ms`, '--mobile-reveal-delay': `${index * 35}ms` }}
+              className={`certificate-card motion-reveal group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0a0a0a] p-5 transition-colors duration-300 hover:border-[var(--portfolio-green)]/50 hover:bg-[#111]`}
+              style={{ ...revealStyle(index), opacity: isVisible ? 1 : 0, transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))' }}
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-[#0a0a0a] flex flex-col justify-center items-center text-center border border-white/5">
                 {cert.image ? (

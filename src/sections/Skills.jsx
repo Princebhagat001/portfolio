@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { revealStyle, viewportOnce } from '../utilis/motion'
 
 const skillsData = [
   { name: 'Linux', percentage: 25, tags: ['Beginner'] },
@@ -84,12 +85,11 @@ function SkillCard({ skill, index, isVisible }) {
 
   return (
     <div 
-      className="skill-card flex flex-col group p-4 sm:p-5 -mx-4 sm:-mx-5 rounded-2xl transition-all duration-300 hover:bg-white/[0.02] hover:-translate-y-1 hover:shadow-[0_10px_30px_-15px_rgba(105,173,63,0.1)]"
+      className="skill-card motion-reveal flex flex-col group p-4 sm:p-5 -mx-4 sm:-mx-5 rounded-2xl transition-all duration-300 hover:bg-white/[0.02] hover:-translate-y-1 hover:shadow-[0_10px_30px_-15px_rgba(105,173,63,0.1)]"
       style={{ 
-        transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
-        '--mobile-reveal-delay': `${index * 45}ms`,
+        ...revealStyle(index),
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(20px)'
+        transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))'
       }}
     >
       {/* Title & Percentage */}
@@ -196,14 +196,15 @@ function Skills() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    const viewport = viewportOnce()
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          if (viewport.once) observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, rootMargin: viewport.margin }
     );
     
     if (sectionRef.current) {

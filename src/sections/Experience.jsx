@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { revealStyle, viewportOnce } from '../utilis/motion'
 
 function Experience() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    const viewport = viewportOnce()
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect();
+          if (viewport.once) observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, rootMargin: viewport.margin }
     );
     
     if (sectionRef.current) {
@@ -39,11 +41,11 @@ function Experience() {
         {/* Experience Timeline / Cards */}
         <div className="max-w-3xl mx-auto">
           <div 
-            className="group relative p-6 sm:p-8 rounded-3xl border border-white/10 bg-[#090909] transition-all duration-500 hover:bg-white/[0.04] hover:border-[var(--portfolio-green)]/30 hover:shadow-[0_10px_40px_-15px_rgba(105,173,63,0.3)] hover:-translate-y-1.5"
+            className="motion-reveal group relative p-6 sm:p-8 rounded-3xl border border-white/10 bg-[#090909] transition-all duration-500 hover:bg-white/[0.04] hover:border-[var(--portfolio-green)]/30 hover:shadow-[0_10px_40px_-15px_rgba(105,173,63,0.3)] hover:-translate-y-1.5"
             style={{ 
+              ...revealStyle(),
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-              transitionDelay: '100ms'
+              transform: isVisible ? 'translateY(0)' : 'translateY(var(--motion-offset))'
             }}
           >
             <div className="flex flex-col sm:flex-row gap-6 items-start relative z-10">
