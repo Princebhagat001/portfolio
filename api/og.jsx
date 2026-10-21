@@ -1,14 +1,11 @@
 import { ImageResponse } from '@vercel/og';
-
-export const config = {
-  runtime: 'edge',
-};
+import { defineHandler } from 'nitro/h3';
 
 const cacheHeaders = {
   'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
 };
 
-export default function handler() {
+export default defineHandler(() => {
   return new ImageResponse(
     (
       <div
@@ -81,4 +78,4 @@ export default function handler() {
       headers: cacheHeaders,
     },
   );
-}
+});
