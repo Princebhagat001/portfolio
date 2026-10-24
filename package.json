@@ -12,7 +12,6 @@
   "dependencies": {
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-github-calendar": "^5.0.9",
     "satori": "^0.63.2",
     "sharp": "^0.35.5"
   },

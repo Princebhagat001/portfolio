@@ -29,15 +29,11 @@ function Navbar() {
     document.addEventListener('pointerdown', closeOnOutsideClick)
     document.addEventListener('keydown', closeOnEscape)
     window.addEventListener('scroll', closeOnScroll, { passive: true, capture: true })
-    window.addEventListener('touchmove', closeOnScroll, { passive: true, capture: true })
-    window.addEventListener('wheel', closeOnScroll, { passive: true, capture: true })
     
     return () => {
       document.removeEventListener('pointerdown', closeOnOutsideClick)
       document.removeEventListener('keydown', closeOnEscape)
       window.removeEventListener('scroll', closeOnScroll, { capture: true })
-      window.removeEventListener('touchmove', closeOnScroll, { capture: true })
-      window.removeEventListener('wheel', closeOnScroll, { capture: true })
     }
   }, [])
 

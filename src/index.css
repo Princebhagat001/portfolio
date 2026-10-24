@@ -515,6 +515,18 @@
     will-change: auto;
   }
 
+  .abstract-field::before {
+    background-image:
+      radial-gradient(circle at 12% 17%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px),
+      radial-gradient(circle at 39% 52%, rgb(255 255 255 / 0.65) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 28% 70%, rgb(105 173 63 / 0.75) 0 2px, transparent 3px),
+      radial-gradient(circle at 78% 26%, rgb(105 173 63 / 0.65) 0 2px, transparent 3px),
+      radial-gradient(circle at 67% 88%, rgb(255 255 255 / 0.7) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 110% 110%, transparent 75%, rgb(181 181 174 / 0.12) 75.1%, transparent 75.25%),
+      radial-gradient(circle at -20% 40%, transparent 50%, rgb(105 173 63 / 0.1) 50.1%, transparent 50.25%),
+      linear-gradient(28deg, transparent 32%, rgb(181 181 174 / 0.06) 32.1%, transparent 32.25%);
+  }
+
   .geometric-art {
     animation-duration: 20s;
   }
@@ -522,7 +534,9 @@
   /* Keep the main radar and orbital movement, but drop secondary loops. */
   .geometric-art [class*='spin_40s_linear_infinite'],
   .geometric-art [class*='spin_15s_linear_infinite_reverse'],
-  .geometric-art [class*='spin_12s_linear_infinite_reverse'] {
+  .geometric-art [class*='spin_12s_linear_infinite_reverse'],
+  .geometric-art [class*='spin_8s_linear_infinite'],
+  .geometric-art [class*='spin_10s_linear_infinite'] {
     animation-play-state: paused !important;
   }
 
@@ -534,16 +548,8 @@
     animation-duration: 6s;
   }
 
-  .geometric-art [class*='spin_8s_linear_infinite'] {
-    animation-duration: 16s;
-  }
-
-  .geometric-art [class*='spin_10s_linear_infinite'] {
-    animation-duration: 20s;
-  }
-
   .geometric-art [class*='morph-polygon_12s_linear_infinite'] {
-    animation-duration: 18s;
+    animation-duration: 24s;
   }
 
   .geometric-art .animate-pulse {
@@ -624,11 +630,6 @@
   
 @keyframes shimmer {  
   100% { transform: translateX(100%); }  
-} 
-  
-@keyframes slideUpFade {  
-  0% { opacity: 0; transform: translateY(40px); }  
-  100% { opacity: 1; transform: translateY(0); }  
 } 
   
 @keyframes slideInLeftItem {  

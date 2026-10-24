@@ -32,7 +32,7 @@ export default function GeometricArt() {
       if (frameRef.current || throttleTimer || !isVisible) return;
       frameRef.current = browserWindow.requestAnimationFrame((timestamp) => {
         frameRef.current = 0;
-        const interval = 1000 / settings.fps;
+        const interval = 1000 / settings.interactionFps;
         const elapsed = timestamp - lastUpdateAt;
         if (lastUpdateAt && elapsed < interval) {
           throttleTimer = browserWindow.setTimeout(() => {

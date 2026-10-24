@@ -1,19 +1,19 @@
 // Keep only settings consumed by the existing CSS/DOM geometric artwork.
 export const qualityLevels = {
   low: {
-    fps: 30,
+    interactionFps: 30,
     pointerStrength: 0.65,
     scrollStrength: 0.3,
     maxFlares: 1,
   },
   medium: {
-    fps: 40,
+    interactionFps: 40,
     pointerStrength: 0.85,
     scrollStrength: 0.45,
     maxFlares: 2,
   },
   high: {
-    fps: 60,
+    interactionFps: 60,
     pointerStrength: 1,
     scrollStrength: 0.6,
     maxFlares: 3,
