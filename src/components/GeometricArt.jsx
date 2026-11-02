@@ -211,7 +211,7 @@ export default function GeometricArt() {
 
       <div 
         ref={artRef}
-        className="absolute w-full h-full flex items-center justify-center animate-[slideInLeftItem_1s_ease-out_forwards] opacity-0"
+        className="geometric-art-entrance absolute w-full h-full flex items-center justify-center animate-[slideInLeftItem_1s_ease-out_forwards] opacity-0"
         style={{
           transform: 'translateY(0) rotate(0deg)',
           transition: 'transform 0.1s ease-out'

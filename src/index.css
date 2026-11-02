@@ -191,10 +191,9 @@
   transition: none !important;
 }
 
-.geometric-art[data-quality='low'] [class*='slideInLeftItem'] {
+.geometric-art[data-quality='low'] .geometric-art-entrance {
   animation: none !important;
   opacity: 1;
-  transform: none !important;
 }
 
 .geometric-art[data-quality='low'] .backdrop-blur-sm {
@@ -227,7 +226,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .geometric-art [class*='slideInLeftItem'] {
+  .geometric-art .geometric-art-entrance {
     opacity: 1;
     transform: none !important;
   }
@@ -690,7 +689,7 @@
 } 
   
 @keyframes slideInLeftItem {  
-  0% { opacity: 1; transform: translateX(-50px); }
+  0% { opacity: 0; transform: translateX(-50px); }
   100% { opacity: 1; transform: translateX(0); }  
 } 
 @keyframes radar-scan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }  
