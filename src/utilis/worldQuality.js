@@ -1,43 +1,43 @@
 // Keep only settings consumed by the existing CSS/DOM geometric artwork.
 export const qualityLevels = {
   low: {
-    interactionFps: 30,
+    updatesPerSecond: 30,
     pointerStrength: 0.65,
     scrollStrength: 0.3,
     maxFlares: 1,
   },
   medium: {
-    interactionFps: 40,
+    updatesPerSecond: 45,
     pointerStrength: 0.85,
     scrollStrength: 0.45,
     maxFlares: 2,
   },
   high: {
-    interactionFps: 60,
+    updatesPerSecond: 60,
     pointerStrength: 1,
     scrollStrength: 0.6,
     maxFlares: 3,
   },
 };
 
-// Pure device-hint selection logic: browser APIs are read by the hook, not here.
+// Keep these thresholds in sync with the early check in index.html.
 export function chooseQuality({
-  width = 0,
-  cores = 4,
-  memory = 4,
+  cores,
+  memory,
   saveData = false,
 }) {
-  if (saveData || cores <= 2 || memory <= 2) {
+  const knownCores = Number.isFinite(cores) ? cores : undefined;
+  const reportedMemory = Number.isFinite(memory) ? memory : undefined;
+  const knownMemory = reportedMemory === 8 ? undefined : reportedMemory;
+  const low = saveData
+    || (knownCores !== undefined && knownCores <= 4)
+    || (knownMemory !== undefined && knownMemory <= 4);
+  const medium = !low
+    && ((knownCores !== undefined && knownCores <= 8)
+      || (knownMemory !== undefined && knownMemory <= 12));
+
+  if (low) {
     return 'low';
   }
-
-  if (width < 700 && (cores < 8 || memory < 8)) {
-    return 'low';
-  }
-
-  if (width < 1200 || cores < 8 || memory < 8) {
-    return 'medium';
-  }
-
-  return 'high';
+  return medium ? 'medium' : 'high';
 }

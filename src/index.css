@@ -172,7 +172,29 @@
 }
 
 .geometric-art[data-quality='low'] [class*='morph-polygon_12s_linear_infinite'] {
-  animation-duration: 20s;
+  animation: none !important;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  background-color: rgb(105 173 63 / 0.1);
+  border-color: rgb(105 173 63 / 0.8);
+  box-shadow: none !important;
+}
+
+.geometric-art[data-quality='low'] {
+  animation: none !important;
+  color: var(--portfolio-green);
+}
+
+.geometric-art[data-quality='low'] *,
+.geometric-art[data-quality='low'] *::before,
+.geometric-art[data-quality='low'] *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
+.geometric-art[data-quality='low'] [class*='slideInLeftItem'] {
+  animation: none !important;
+  opacity: 1;
+  transform: none !important;
 }
 
 .geometric-art[data-quality='low'] .backdrop-blur-sm {
@@ -192,11 +214,6 @@
   transition: none !important;
 }
 
-/* Stop the large animated starfield while its section is well outside view. */
-.abstract-field:not([data-in-view='true'])::before {
-  animation-play-state: paused !important;
-}
-
 .abstract-field:not([data-in-view='true']),
 .abstract-field:not([data-in-view='true']) *,
 .abstract-field:not([data-in-view='true']) *::before,
@@ -204,7 +221,17 @@
   animation-play-state: paused !important;
 }
 
+.abstract-field:not([data-in-view='true'])::before {
+  animation-play-state: paused !important;
+  will-change: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .geometric-art [class*='slideInLeftItem'] {
+    opacity: 1;
+    transform: none !important;
+  }
+
   .geometric-art *,
   .geometric-art *::before,
   .geometric-art *::after {
@@ -296,48 +323,73 @@
   width: 140%;
   height: 140%;
   animation: cosmic-drift 60s ease-in-out infinite;
-  will-change: transform;
-  transform: translateZ(0);
+  transform: var(--cosmic-transform, translateZ(0));
   backface-visibility: hidden;
+  --galaxy-glow-opacity-1: 0.07;
+  --galaxy-glow-opacity-2: 0.05;
+  --galaxy-glow-opacity-3: 0.04;
+  --galaxy-glow-opacity-4: 0.04;
+  --galaxy-glow-1: radial-gradient(circle at 15% 25%, rgb(105 173 63 / var(--galaxy-glow-opacity-1)) 0%, transparent 40%);
+  --galaxy-glow-2: radial-gradient(circle at 75% 65%, rgb(40 120 200 / var(--galaxy-glow-opacity-2)) 0%, transparent 50%);
+  --galaxy-glow-3: radial-gradient(circle at 50% 85%, rgb(150 40 200 / var(--galaxy-glow-opacity-3)) 0%, transparent 45%);
+  --galaxy-glow-4: radial-gradient(circle at 85% 15%, rgb(105 173 63 / var(--galaxy-glow-opacity-4)) 0%, transparent 35%);
+  --galaxy-star-1: radial-gradient(circle at 12% 17%, rgb(255 255 255 / 1) 0 2px, transparent 3px);
+  --galaxy-star-2: radial-gradient(circle at 39% 52%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px);
+  --galaxy-star-3: radial-gradient(circle at 19% 28%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px);
+  --galaxy-star-4: radial-gradient(circle at 28% 70%, rgb(105 173 63 / 0.9) 0 2.5px, transparent 4px);
+  --galaxy-star-5: radial-gradient(circle at 38% 19%, rgb(255 255 255 / 0.7) 0 1.5px, transparent 2.5px);
+  --galaxy-star-6: radial-gradient(circle at 47% 63%, rgb(255 255 255 / 1) 0 2px, transparent 3px);
+  --galaxy-star-7: radial-gradient(circle at 56% 34%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px);
+  --galaxy-star-8: radial-gradient(circle at 67% 88%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px);
+  --galaxy-star-9: radial-gradient(circle at 78% 26%, rgb(105 173 63 / 0.8) 0 2.5px, transparent 4px);
+  --galaxy-star-10: radial-gradient(circle at 89% 57%, rgb(255 255 255 / 1) 0 2px, transparent 3px);
+  --galaxy-star-11: radial-gradient(circle at 97% 20%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px);
+  --galaxy-star-12: radial-gradient(circle at 5% 85%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px);
+  --galaxy-star-13: radial-gradient(circle at 15% 95%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px);
+  --galaxy-star-14: radial-gradient(circle at 25% 45%, rgb(105 173 63 / 0.9) 0 1.5px, transparent 3px);
+  --galaxy-star-15: radial-gradient(circle at 45% 12%, rgb(255 255 255 / 1) 0 2.5px, transparent 4px);
+  --galaxy-star-16: radial-gradient(circle at 65% 42%, rgb(255 255 255 / 0.7) 0 1.5px, transparent 2.5px);
+  --galaxy-star-17: radial-gradient(circle at 85% 12%, rgb(255 255 255 / 1) 0 2px, transparent 3px);
+  --galaxy-star-18: radial-gradient(circle at 92% 75%, rgb(105 173 63 / 0.9) 0 1.5px, transparent 3px);
+  --galaxy-star-19: radial-gradient(circle at 55% 82%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px);
+  --galaxy-star-20: radial-gradient(circle at 3% 30%, rgb(255 255 255 / 1) 0 1.5px, transparent 2.5px);
+  --galaxy-star-21: radial-gradient(circle at 88% 85%, rgb(255 255 255 / 1) 0 2px, transparent 3px);
+  --galaxy-orbit-1: radial-gradient(circle at 110% 110%, transparent 75%, rgb(181 181 174 / 0.15) 75.1%, transparent 75.25%);
+  --galaxy-orbit-2: radial-gradient(circle at -20% 40%, transparent 50%, rgb(105 173 63 / 0.12) 50.1%, transparent 50.25%);
+  --galaxy-orbit-3: radial-gradient(circle at 10% 130%, transparent 55%, rgb(181 181 174 / 0.12) 55.1%, transparent 55.25%);
+  --galaxy-ribbon: linear-gradient(28deg, transparent 32%, rgb(181 181 174 / 0.08) 32.1%, transparent 32.25%);
   background-image:
-    /* Deep Space Nebulas */
-    radial-gradient(circle at 15% 25%, rgb(105 173 63 / 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 75% 65%, rgb(40 120 200 / 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 50% 85%, rgb(150 40 200 / 0.04) 0%, transparent 45%),
-    radial-gradient(circle at 85% 15%, rgb(105 173 63 / 0.04) 0%, transparent 35%),
-    
-    /* Distant Star Clusters (Base) */
-    radial-gradient(circle at 12% 17%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
-    radial-gradient(circle at 39% 52%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 19% 28%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px),
-    radial-gradient(circle at 28% 70%, rgb(105 173 63 / 0.9) 0 2.5px, transparent 4px),
-    radial-gradient(circle at 38% 19%, rgb(255 255 255 / 0.7) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 47% 63%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
-    radial-gradient(circle at 56% 34%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 67% 88%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px),
-    radial-gradient(circle at 78% 26%, rgb(105 173 63 / 0.8) 0 2.5px, transparent 4px),
-    radial-gradient(circle at 89% 57%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
-    radial-gradient(circle at 97% 20%, rgb(255 255 255 / 0.8) 0 1.5px, transparent 2.5px),
-    
-    /* New Stars added */
-    radial-gradient(circle at 5% 85%, rgb(255 255 255 / 0.9) 0 2px, transparent 3px),
-    radial-gradient(circle at 15% 95%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px),
-    radial-gradient(circle at 25% 45%, rgb(105 173 63 / 0.9) 0 1.5px, transparent 3px),
-    radial-gradient(circle at 45% 12%, rgb(255 255 255 / 1) 0 2.5px, transparent 4px),
-    radial-gradient(circle at 65% 42%, rgb(255 255 255 / 0.7) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 85% 12%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
-    radial-gradient(circle at 92% 75%, rgb(105 173 63 / 0.9) 0 1.5px, transparent 3px),
-    radial-gradient(circle at 55% 82%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px),
+    var(--galaxy-glow-1), var(--galaxy-glow-2), var(--galaxy-glow-3), var(--galaxy-glow-4),
+    var(--galaxy-star-1), var(--galaxy-star-2), var(--galaxy-star-3), var(--galaxy-star-4), var(--galaxy-star-5),
+    var(--galaxy-star-6), var(--galaxy-star-7), var(--galaxy-star-8), var(--galaxy-star-9), var(--galaxy-star-10),
+    var(--galaxy-star-11), var(--galaxy-star-12), var(--galaxy-star-13), var(--galaxy-star-14), var(--galaxy-star-15),
+    var(--galaxy-star-16), var(--galaxy-star-17), var(--galaxy-star-18), var(--galaxy-star-19), var(--galaxy-star-20),
+    var(--galaxy-star-21), var(--galaxy-orbit-1), var(--galaxy-orbit-2), var(--galaxy-orbit-3), var(--galaxy-ribbon);
+}
 
-    /* Dense Starfield Addition (Trimmed) */
-    radial-gradient(circle at 3% 30%, rgb(255 255 255 / 1) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 88% 85%, rgb(255 255 255 / 1) 0 2px, transparent 3px),
-    
-    /* Curvy Orbital and Constellation lines */
-    radial-gradient(circle at 110% 110%, transparent 75%, rgb(181 181 174 / 0.15) 75.1%, transparent 75.25%),
-    radial-gradient(circle at -20% 40%, transparent 50%, rgb(105 173 63 / 0.12) 50.1%, transparent 50.25%),
-    radial-gradient(circle at 10% 130%, transparent 55%, rgb(181 181 174 / 0.12) 55.1%, transparent 55.25%),
-    linear-gradient(28deg, transparent 32%, rgb(181 181 174 / 0.08) 32.1%, transparent 32.25%);
+@media (min-width: 768px) and (pointer: fine) {
+  html[data-galaxy-quality='low'] .abstract-field:not(.hero-grid)::before {
+    animation: none;
+    background-image:
+      var(--galaxy-glow-1), var(--galaxy-glow-2),
+      var(--galaxy-star-1), var(--galaxy-star-2), var(--galaxy-star-3), var(--galaxy-star-4),
+      var(--galaxy-star-5), var(--galaxy-star-6), var(--galaxy-star-7), var(--galaxy-star-8),
+      var(--galaxy-orbit-1), var(--galaxy-orbit-2), var(--galaxy-ribbon);
+  }
+
+  html[data-galaxy-quality='medium'] .abstract-field:not(.hero-grid)::before {
+    background-image:
+      var(--galaxy-glow-1), var(--galaxy-glow-2), var(--galaxy-glow-3), var(--galaxy-glow-4),
+      var(--galaxy-star-1), var(--galaxy-star-2), var(--galaxy-star-3), var(--galaxy-star-4), var(--galaxy-star-5),
+      var(--galaxy-star-6), var(--galaxy-star-7), var(--galaxy-star-8), var(--galaxy-star-9), var(--galaxy-star-10),
+      var(--galaxy-star-11), var(--galaxy-star-12), var(--galaxy-star-13), var(--galaxy-star-14),
+      var(--galaxy-orbit-1), var(--galaxy-orbit-2), var(--galaxy-orbit-3), var(--galaxy-ribbon);
+  }
+
+}
+
+.abstract-field[data-in-view='true']::before {
+  will-change: transform;
 }
 
 .abstract-field::after {
@@ -506,8 +558,13 @@
 .social-rail-link:focus-visible { outline: 2px solid var(--portfolio-green); outline-offset: 3px; }
 @media (min-width: 1280px) { .social-rail { display: grid; } }
 
-/* Keep the orbital graphic moving on phones, but remove its secondary loops. */
+/* Keep the galaxy static on phones and reduce the orbital graphic's secondary loops. */
 @media (max-width: 767px), (pointer: coarse) {
+  .abstract-field:not([data-in-view='true'])::before,
+  .abstract-field:not([data-in-view='true'])::after {
+    visibility: hidden;
+  }
+
   .abstract-field::before {
     animation: none;
     backface-visibility: visible;
@@ -515,7 +572,7 @@
     will-change: auto;
   }
 
-  .abstract-field::before {
+  .abstract-field:not(.hero-grid)::before {
     background-image:
       radial-gradient(circle at 12% 17%, rgb(255 255 255 / 0.8) 0 2px, transparent 3px),
       radial-gradient(circle at 39% 52%, rgb(255 255 255 / 0.65) 0 1.5px, transparent 2.5px),
@@ -633,7 +690,7 @@
 } 
   
 @keyframes slideInLeftItem {  
-  0% { opacity: 0; transform: translateX(-50px); }  
+  0% { opacity: 1; transform: translateX(-50px); }
   100% { opacity: 1; transform: translateX(0); }  
 } 
 @keyframes radar-scan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }  

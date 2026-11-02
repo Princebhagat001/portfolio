@@ -4,6 +4,24 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (() => {
+        // Keep these thresholds in sync with chooseQuality() in src/utilis/worldQuality.js.
+        const cores = Number.isFinite(navigator.hardwareConcurrency)
+          ? navigator.hardwareConcurrency
+          : undefined;
+        const reportedMemory = Number.isFinite(navigator.deviceMemory)
+          ? navigator.deviceMemory
+          : undefined;
+        // Chromium caps this hint at 8 GB, so 8 cannot distinguish higher tiers.
+        const memory = reportedMemory === 8 ? undefined : reportedMemory;
+        const saveData = Boolean(navigator.connection?.saveData);
+        const low = saveData || (cores !== undefined && cores <= 4) || (memory !== undefined && memory <= 4);
+        const medium = !low && ((cores !== undefined && cores <= 8) || (memory !== undefined && memory <= 12));
+        const quality = low ? 'low' : medium ? 'medium' : 'high';
+        document.documentElement.dataset.galaxyQuality = quality;
+      })();
+    </script>
     <meta name="theme-color" content="#050505" />
     <meta name="description" content="Explore Prince Bhagat's portfolio, cybersecurity interests, web development projects, technical skills, and learning journey." />
     <meta name="author" content="Prince Bhagat" />

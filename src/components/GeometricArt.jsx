@@ -22,6 +22,7 @@ export default function GeometricArt() {
     let pointerY = 0;
     let latestScrollY = browserWindow.scrollY;
     let isVisible = false;
+    let isInViewport = false;
     let tracksPointer = false;
     let lastUpdateAt = 0;
     let bounds = root.getBoundingClientRect();
@@ -32,7 +33,7 @@ export default function GeometricArt() {
       if (frameRef.current || throttleTimer || !isVisible) return;
       frameRef.current = browserWindow.requestAnimationFrame((timestamp) => {
         frameRef.current = 0;
-        const interval = 1000 / settings.interactionFps;
+        const interval = 1000 / settings.updatesPerSecond;
         const elapsed = timestamp - lastUpdateAt;
         if (lastUpdateAt && elapsed < interval) {
           throttleTimer = browserWindow.setTimeout(() => {
@@ -67,15 +68,31 @@ export default function GeometricArt() {
 
     const handleResize = () => {
       bounds = root.getBoundingClientRect();
-      const isInViewport = bounds.bottom > 0
+      const nextInViewport = bounds.bottom > 0
         && bounds.top < browserWindow.innerHeight
         && bounds.right > 0
         && bounds.left < browserWindow.innerWidth;
-      if (isInViewport !== isVisible) {
-        isVisible = isInViewport;
-        root.dataset.visible = String(isVisible);
+      if (nextInViewport !== isInViewport) {
+        isInViewport = nextInViewport;
+        syncVisibility();
       }
       scheduleUpdate();
+    };
+
+    const syncVisibility = () => {
+      const nextVisible = isInViewport && !browserWindow.document.hidden;
+      if (nextVisible === isVisible) return;
+      isVisible = nextVisible;
+      root.dataset.visible = String(isVisible);
+      if (isVisible) {
+        latestScrollY = browserWindow.scrollY;
+        scheduleUpdate();
+      } else {
+        if (frameRef.current) browserWindow.cancelAnimationFrame(frameRef.current);
+        frameRef.current = 0;
+        if (throttleTimer) browserWindow.clearTimeout(throttleTimer);
+        throttleTimer = 0;
+      }
     };
 
     const finePointer = browserWindow.matchMedia('(pointer: fine)');
@@ -100,26 +117,18 @@ export default function GeometricArt() {
       browserWindow.addEventListener('scroll', handleScroll, { passive: true });
     }
     browserWindow.addEventListener('resize', handleResize, { passive: true });
+    browserWindow.document.addEventListener('visibilitychange', syncVisibility);
 
     let observer;
     if (typeof globalThis.IntersectionObserver === 'function') {
       observer = new globalThis.IntersectionObserver(([entry]) => {
-        isVisible = entry.isIntersecting;
-        root.dataset.visible = String(isVisible);
-        if (isVisible) {
-          latestScrollY = browserWindow.scrollY;
-          scheduleUpdate();
-        } else {
-          if (frameRef.current) browserWindow.cancelAnimationFrame(frameRef.current);
-          frameRef.current = 0;
-          if (throttleTimer) browserWindow.clearTimeout(throttleTimer);
-          throttleTimer = 0;
-        }
+        isInViewport = entry.isIntersecting;
+        syncVisibility();
       });
       observer.observe(root);
     } else {
-      isVisible = true;
-      root.dataset.visible = 'true';
+      isInViewport = true;
+      syncVisibility();
     }
     scheduleUpdate();
 
@@ -132,6 +141,7 @@ export default function GeometricArt() {
       if (tracksScroll) {
         browserWindow.removeEventListener('scroll', handleScroll);
       }
+      browserWindow.document.removeEventListener('visibilitychange', syncVisibility);
       observer?.disconnect();
       browserWindow.removeEventListener('resize', handleResize);
       if (frameRef.current) browserWindow.cancelAnimationFrame(frameRef.current);
@@ -147,7 +157,7 @@ export default function GeometricArt() {
   const handleClick = (e) => {
     // Taps on phones should interact with the page without spawning a flare.
     const browserWindow = globalThis.window;
-    if (reducedMotion || browserWindow.matchMedia('(pointer: coarse)').matches) return;
+    if (quality === 'low' || reducedMotion || browserWindow.matchMedia('(pointer: coarse)').matches) return;
 
     const id = `${Date.now()}-${Math.random()}`;
     // We want the flare to originate where the mouse clicked relative to the screen
@@ -176,7 +186,7 @@ export default function GeometricArt() {
       onClick={handleClick}
     >
       {/* Flare Container fixed to screen so flares don't get clipped by parallax containers */}
-      {flares.length > 0 && (
+      {quality !== 'low' && flares.length > 0 && (
         <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
           {flares.map(flare => (
             <div 
