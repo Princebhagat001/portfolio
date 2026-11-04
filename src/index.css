@@ -189,6 +189,20 @@
   transition: none !important;
 }
 
+/* Keep the main orbital and radar motion at a 30-step visual cadence on Low. */
+.geometric-art[data-quality='low'] [class*='spin_25s_linear_infinite'],
+.geometric-art[data-quality='low'] [class*='radar-scan_4s_linear_infinite'] {
+  animation-play-state: running !important;
+}
+
+.geometric-art[data-quality='low'] [class*='spin_25s_linear_infinite'] {
+  animation-timing-function: steps(750, end);
+}
+
+.geometric-art[data-quality='low'] [class*='radar-scan_4s_linear_infinite'] {
+  animation-timing-function: steps(210, end);
+}
+
 .geometric-art[data-quality='low'] .geometric-art-entrance {
   animation: none !important;
   opacity: 1;
@@ -586,6 +600,10 @@
 
   .geometric-art [class*='spin_25s_linear_infinite'] {
     animation-duration: 40s;
+  }
+
+  .geometric-art[data-quality='low'] [class*='spin_25s_linear_infinite'] {
+    animation-timing-function: steps(1200, end);
   }
 
   .geometric-art [class*='radar-scan_4s_linear_infinite'] {
