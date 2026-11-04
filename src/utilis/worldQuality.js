@@ -29,6 +29,7 @@ export function chooseQuality({
   const knownCores = Number.isFinite(cores) ? cores : undefined;
   const reportedMemory = Number.isFinite(memory) ? memory : undefined;
   const knownMemory = reportedMemory === 8 ? undefined : reportedMemory;
+  if (knownCores === undefined && knownMemory === undefined) return 'low';
   const low = saveData
     || (knownCores !== undefined && knownCores <= 4)
     || (knownMemory !== undefined && knownMemory <= 4);

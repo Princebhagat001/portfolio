@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { chooseQuality, qualityLevels } from '../utilis/worldQuality';
 
-const DEFAULT_QUALITY = 'medium';
+const DEFAULT_QUALITY = 'low';
 const QUALITY_RANK = { low: 0, medium: 1, high: 2 };
 
 function getInitialDeviceState() {
