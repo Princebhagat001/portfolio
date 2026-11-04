@@ -5,22 +5,25 @@ const POINTER_SCALES = [25, 20, -15, -5, 10, 15, 5];
 
 export default function GeometricArt() {
   const containerRef = useRef(null);
-  const artRef = useRef(null);
   const frameRef = useRef(0);
-  const flareTimeoutsRef = useRef(new Map());
-
-  const [flares, setFlares] = useState([]);
+  const rippleIdRef = useRef(0);
+  const [motionReady, setMotionReady] = useState(false);
+  const [shapeIndex, setShapeIndex] = useState(0);
+  const [ripples, setRipples] = useState([]);
   const { quality, settings, reducedMotion } = useGraphicsQuality();
+
+  useEffect(() => {
+    const timer = globalThis.window.setTimeout(() => setMotionReady(true), 2000);
+    return () => globalThis.window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const browserWindow = globalThis.window;
     const root = containerRef.current;
-    const art = artRef.current;
-    if (!root || !art) return;
+    if (!root) return;
 
     let pointerX = 0;
     let pointerY = 0;
-    let latestScrollY = browserWindow.scrollY;
     let isVisible = false;
     let isInViewport = false;
     let tracksPointer = false;
@@ -30,7 +33,7 @@ export default function GeometricArt() {
 
     // Keep high-frequency input out of React's render cycle and write at most once per frame.
     const scheduleUpdate = () => {
-      if (frameRef.current || throttleTimer || !isVisible) return;
+      if (!motionReady || frameRef.current || throttleTimer || !isVisible) return;
       frameRef.current = browserWindow.requestAnimationFrame((timestamp) => {
         frameRef.current = 0;
         const interval = 1000 / settings.updatesPerSecond;
@@ -48,8 +51,6 @@ export default function GeometricArt() {
           root.style.setProperty(`--pointer-x-${scale}`, `${pointerX * scale * movement}px`);
           root.style.setProperty(`--pointer-y-${scale}`, `${pointerY * scale * movement}px`);
         });
-        const scrollStrength = reducedMotion ? 0 : settings.scrollStrength;
-        art.style.transform = `translateY(${latestScrollY * scrollStrength}px) rotate(${latestScrollY * scrollStrength * (0.05 / 0.6)}deg)`;
       });
     };
 
@@ -57,12 +58,6 @@ export default function GeometricArt() {
       if (reducedMotion || !bounds.width || !bounds.height) return;
       pointerX = (e.clientX - bounds.left) / bounds.width - 0.5;
       pointerY = (e.clientY - bounds.top) / bounds.height - 0.5;
-      scheduleUpdate();
-    };
-
-    const handleScroll = () => {
-      if (!isVisible) return;
-      latestScrollY = browserWindow.scrollY;
       scheduleUpdate();
     };
 
@@ -85,7 +80,6 @@ export default function GeometricArt() {
       isVisible = nextVisible;
       root.dataset.visible = String(isVisible);
       if (isVisible) {
-        latestScrollY = browserWindow.scrollY;
         scheduleUpdate();
       } else {
         if (frameRef.current) browserWindow.cancelAnimationFrame(frameRef.current);
@@ -112,10 +106,6 @@ export default function GeometricArt() {
     syncPointerTracking();
     finePointer.addEventListener?.('change', syncPointerTracking);
     if (!finePointer.addEventListener) finePointer.addListener?.(syncPointerTracking);
-    const tracksScroll = !reducedMotion;
-    if (tracksScroll) {
-      browserWindow.addEventListener('scroll', handleScroll, { passive: true });
-    }
     browserWindow.addEventListener('resize', handleResize, { passive: true });
     browserWindow.document.addEventListener('visibilitychange', syncVisibility);
 
@@ -138,43 +128,27 @@ export default function GeometricArt() {
       }
       finePointer.removeEventListener?.('change', syncPointerTracking);
       if (!finePointer.removeEventListener) finePointer.removeListener?.(syncPointerTracking);
-      if (tracksScroll) {
-        browserWindow.removeEventListener('scroll', handleScroll);
-      }
       browserWindow.document.removeEventListener('visibilitychange', syncVisibility);
       observer?.disconnect();
       browserWindow.removeEventListener('resize', handleResize);
       if (frameRef.current) browserWindow.cancelAnimationFrame(frameRef.current);
       if (throttleTimer) browserWindow.clearTimeout(throttleTimer);
     };
-  }, [settings, reducedMotion]);
+  }, [settings, reducedMotion, motionReady]);
 
-  useEffect(() => () => {
-    flareTimeoutsRef.current.forEach((timeout) => globalThis.window.clearTimeout(timeout));
-    flareTimeoutsRef.current.clear();
-  }, []);
-
-  const handleClick = (e) => {
-    // Taps on phones should interact with the page without spawning a flare.
+  const handleClick = (event) => {
     const browserWindow = globalThis.window;
-    if (quality === 'low' || reducedMotion || browserWindow.matchMedia('(pointer: coarse)').matches) return;
+    if (browserWindow.matchMedia('(pointer: coarse)').matches) return;
 
-    const id = `${Date.now()}-${Math.random()}`;
-    // We want the flare to originate where the mouse clicked relative to the screen
-    if (flareTimeoutsRef.current.size >= settings.maxFlares) {
-      const oldestId = flareTimeoutsRef.current.keys().next().value;
-      browserWindow.clearTimeout(flareTimeoutsRef.current.get(oldestId));
-      flareTimeoutsRef.current.delete(oldestId);
+    setShapeIndex((current) => (current + 1) % 4);
+    if (!reducedMotion) {
+      const bounds = containerRef.current.getBoundingClientRect();
+      setRipples((current) => [...current, {
+        id: ++rippleIdRef.current,
+        x: event.clientX - bounds.left,
+        y: event.clientY - bounds.top,
+      }]);
     }
-    setFlares((prev) => [
-      ...(settings.maxFlares > 1 ? prev.slice(-(settings.maxFlares - 1)) : []),
-      { id, x: e.clientX, y: e.clientY },
-    ]);
-    const timeout = browserWindow.setTimeout(() => {
-      flareTimeoutsRef.current.delete(id);
-      setFlares(prev => prev.filter(f => f.id !== id));
-    }, 1000);
-    flareTimeoutsRef.current.set(id, timeout);
   };
 
   return (
@@ -183,39 +157,27 @@ export default function GeometricArt() {
       className="geometric-art relative w-full max-w-[500px] aspect-square flex items-center justify-center group mx-auto mix-blend-screen z-[0] cursor-pointer animate-[art-color-shift_12s_linear_infinite]"
       data-quality={quality}
       data-reduced-motion={reducedMotion}
+      data-motion-ready={motionReady}
       onClick={handleClick}
     >
-      {/* Flare Container fixed to screen so flares don't get clipped by parallax containers */}
-      {quality !== 'low' && flares.length > 0 && (
-        <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
-          {flares.map(flare => (
-            <div 
-              key={flare.id} 
-              className="absolute rounded-full mix-blend-screen pointer-events-none animate-[art-color-shift_12s_linear_infinite]"
-              style={{
-                left: flare.x,
-                top: flare.y,
-                transform: 'translate(-50%, -50%)',
-                width: '150px',
-                height: '150px',
-                background: 'radial-gradient(circle, color-mix(in srgb, currentColor 80%, transparent) 0%, color-mix(in srgb, currentColor 10%, transparent) 40%, transparent 70%)',
-                animation: 'nova-burst 1s ease-out forwards'
-              }}
-            >
-               <div className="absolute inset-0 m-auto w-10 h-10 bg-white rounded-full blur-md animate-[nova-flash_1s_ease-out_forwards]"></div>
-               <div className="absolute inset-0 m-auto w-full h-full border border-current rounded-full animate-[nova-ring_1s_ease-out_forwards]"></div>
-            </div>
-          ))}
+      {ripples.map((ripple) => (
+        <div
+          key={ripple.id}
+          className="geometric-art-click-burst"
+          style={{ left: ripple.x, top: ripple.y }}
+          onAnimationEnd={(event) => {
+            if (event.target === event.currentTarget) {
+              setRipples((current) => current.filter(({ id }) => id !== ripple.id));
+            }
+          }}
+          aria-hidden="true"
+        >
+          <span className="geometric-art-click-flash" />
+          <span className="geometric-art-click-ring" />
         </div>
-      )}
-
+      ))}
       <div 
-        ref={artRef}
-        className="geometric-art-entrance absolute w-full h-full flex items-center justify-center animate-[slideInLeftItem_1s_ease-out_forwards] opacity-0"
-        style={{
-          transform: 'translateY(0) rotate(0deg)',
-          transition: 'transform 0.1s ease-out'
-        }}
+        className="geometric-art-entrance absolute w-full h-full flex items-center justify-center"
       >
         {/* Outermost Faint Dashed Ring */}
       <div 
@@ -281,12 +243,14 @@ export default function GeometricArt() {
         </div>
       </div>
       
-      {/* Central Morphing Polygon */}
-      <div 
-        className="absolute w-[18%] h-[18%] border animate-[morph-polygon_12s_linear_infinite] group-hover:shadow-[0_0_40px_currentColor] transition-all duration-500 flex items-center justify-center backdrop-blur-sm z-10"
-        style={{ transform: 'translate(var(--pointer-x-5, 0px), var(--pointer-y-5, 0px))' }}
-      >
-        <div className="w-3 h-3 bg-current rounded-full animate-pulse shadow-[0_0_20px_currentColor]"></div>
+      {/* Click-reactive center shape and ring pulse */}
+      <div className="geometric-art-center absolute w-[18%] h-[18%] z-10" data-shape={shapeIndex}>
+        <div
+          className="geometric-art-core w-full h-full border group-hover:shadow-[0_0_40px_currentColor] flex items-center justify-center backdrop-blur-sm"
+          style={{ transform: 'translate(var(--pointer-x-5, 0px), var(--pointer-y-5, 0px))' }}
+        >
+          <div className="geometric-art-core-dot w-3 h-3 bg-current rounded-full shadow-[0_0_20px_currentColor]"></div>
+        </div>
       </div>
 
       {/* Axis Lines */}

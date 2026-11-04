@@ -3,20 +3,14 @@ export const qualityLevels = {
   low: {
     updatesPerSecond: 30,
     pointerStrength: 0.65,
-    scrollStrength: 0.3,
-    maxFlares: 1,
   },
   medium: {
     updatesPerSecond: 45,
     pointerStrength: 0.85,
-    scrollStrength: 0.45,
-    maxFlares: 2,
   },
   high: {
     updatesPerSecond: 60,
     pointerStrength: 1,
-    scrollStrength: 0.6,
-    maxFlares: 3,
   },
 };
 
