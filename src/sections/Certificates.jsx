@@ -26,7 +26,7 @@ function Certificates() {
   }, []);
 
   return (
-    <section id="certificates" ref={sectionRef} className="abstract-field isolate relative overflow-hidden border-t border-white/10 bg-[var(--portfolio-black)] py-16 sm:py-24">
+    <section id="certificates" ref={sectionRef} className="isolate relative overflow-hidden border-t border-white/10 bg-transparent py-16 sm:py-24">
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <header 
           className="motion-reveal flex flex-col md:flex-row md:items-center justify-between gap-10 transition-all duration-1000 ease-out"

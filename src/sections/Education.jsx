@@ -27,7 +27,7 @@ function Education() {
   }, []);
 
   return (
-    <section id="education" ref={sectionRef} className="abstract-field isolate relative overflow-hidden border-t border-white/10 bg-[var(--portfolio-black)] py-16 sm:py-24" aria-labelledby="education-heading">
+    <section id="education" ref={sectionRef} className="isolate relative overflow-hidden border-t border-white/10 bg-transparent py-16 sm:py-24" aria-labelledby="education-heading">
       <div className="relative z-10 mx-auto max-w-5xl px-5 sm:px-8 lg:px-12">
         <header 
           className="motion-reveal mx-auto max-w-3xl text-center transition-all duration-1000 ease-out"

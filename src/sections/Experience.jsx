@@ -25,7 +25,7 @@ function Experience() {
   }, []);
 
   return (
-    <section id="experience" ref={sectionRef} className="abstract-field isolate relative py-16 sm:py-24 bg-black border-t border-white/5">
+    <section id="experience" ref={sectionRef} className="isolate relative py-16 sm:py-24 bg-transparent border-t border-white/5">
       <div className="relative z-10 mx-auto max-w-[1200px] px-6 sm:px-12 lg:px-16">
         
         {/* Section Header */}

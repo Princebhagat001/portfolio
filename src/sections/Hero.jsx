@@ -1,4 +1,3 @@
-import Navbar from '../components/Navbar'
 import ScrollIndicator from '../components/ScrollIndicator'
 import GeometricArt from '../components/GeometricArt'
 import GlitchText from '../components/GlitchText'
@@ -8,11 +7,10 @@ function Hero() {
   return (
     <section 
       id="home" 
-      className="hero-grid abstract-field relative isolate flex min-h-screen flex-col bg-black" 
+      className="hero-grid abstract-field relative isolate flex min-h-screen flex-col bg-black"
+      data-in-view="true"
       aria-labelledby="hero-name"
     >
-      <Navbar />
-
       <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col justify-center px-6 pt-24 sm:px-12 lg:flex-row lg:items-center lg:px-16 lg:pt-0 ">
         
         <div className="flex-1 w-full flex flex-col items-start justify-center relative z-10 lg:pl-16 xl:pl-[140px] lg:pr-10 order-1 lg:mt-10 ">

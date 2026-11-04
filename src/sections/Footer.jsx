@@ -13,7 +13,7 @@ const exploreLinks = [
 function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer id="closing" className="abstract-field relative isolate min-h-[780px] overflow-hidden bg-black pt-12 sm:pt-16" aria-label="Site footer">
+    <footer id="closing" className="relative isolate min-h-[780px] overflow-hidden bg-transparent pt-12 sm:pt-16" aria-label="Site footer">
       <div className="relative z-10 mx-auto max-w-[1380px] border-t border-white/10 px-5 pt-14 sm:px-8 sm:pt-18 lg:px-12 lg:pt-20">
         <div className="grid gap-14 lg:grid-cols-[1.55fr_0.7fr_0.7fr] lg:gap-20">
           <section className="max-w-md" aria-label={`About ${personal.fullName}`}>
@@ -32,11 +32,11 @@ function Footer() {
         </div>
       </div>
       <div className="wordmark name-display footer-wordmark pointer-events-none relative z-0 mt-36 select-none whitespace-nowrap text-center text-[clamp(3.15rem,11.5vw,13rem)] sm:mt-52"><span>{personal.footerDisplayName}</span></div>
-      <div className="relative z-10 mx-auto mt-12 flex max-w-[1380px] flex-col gap-5 border-t border-white/10 px-5 py-7 text-[9px] uppercase tracking-[0.13em] text-[var(--portfolio-grey)] sm:mt-16 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:px-8 lg:px-12">
-        <p>© {year} {personal.fullName} — All Rights Reserved</p>
-        <p className="inline-flex items-center gap-3 sm:text-center">{personal.location}<span className="h-1 w-1 rounded-full bg-[var(--portfolio-grey)]" aria-hidden="true" /><span className="inline-flex items-center gap-2 text-[var(--portfolio-green)]"><span className="h-1.5 w-1.5 rounded-full bg-current animate-[pulse-glow_2.5s_ease-in-out_infinite]" aria-hidden="true" />Secured</span></p>
-        <div className="flex items-center justify-between gap-5 sm:justify-self-end">
-          <a href="#home" className="rounded-full border border-white/25 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.14em] text-white transition-colors hover:border-[var(--portfolio-green)] hover:text-[var(--portfolio-green)]">Back to top ↑</a>
+      <div className="relative z-10 mx-auto mt-12 grid max-w-[1380px] grid-cols-[1fr_auto] items-center gap-x-2 gap-y-5 border-t border-white/10 px-5 py-7 text-[9px] uppercase tracking-[0.13em] text-[var(--portfolio-grey)] sm:mt-16 sm:grid-cols-[1fr_auto_1fr] sm:px-8 lg:px-12">
+        <p className="col-span-2 sm:col-span-1">© {year} {personal.fullName} — All Rights Reserved</p>
+        <p className="inline-flex min-w-0 items-center gap-2 whitespace-nowrap sm:justify-self-center">{personal.location}<span className="h-1 w-1 rounded-full bg-[var(--portfolio-grey)]" aria-hidden="true" /><span className="inline-flex items-center gap-2 text-[var(--portfolio-green)]"><span className="h-1.5 w-1.5 rounded-full bg-current animate-[secured-blink_2.5s_ease-in-out_infinite]" aria-hidden="true" />Secured</span></p>
+        <div className="flex items-center justify-end sm:justify-self-end">
+          <a href="#home" className="w-fit whitespace-nowrap rounded-full border border-white/25 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.14em] text-white transition-colors hover:border-[var(--portfolio-green)] hover:text-[var(--portfolio-green)]">Back to top ↑</a>
         </div>
       </div>
     </footer>

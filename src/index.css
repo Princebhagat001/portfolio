@@ -106,6 +106,8 @@
     font-family: 'Open Sans', sans-serif;
   }
 
+  #root { min-height: 100vh; background: #050505; }
+
   h1,
   h2,
   h3,
@@ -226,6 +228,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .shared-galaxy-field::before {
+    animation: none !important;
+  }
+
   .geometric-art .geometric-art-entrance {
     opacity: 1;
     transform: none !important;
@@ -316,7 +322,7 @@
 
 .abstract-field::before {
   opacity: 0.65;
-  /* Make canvas larger than viewport so rotation doesn't expose edges */
+  /* Extend the layer beyond the viewport so rotation doesn't expose edges */
   top: -20%;
   left: -20%;
   width: 140%;
@@ -548,6 +554,15 @@
 
 .site-header { position: fixed !important; top: 0; right: 0; left: 0; z-index: 50; }
 
+#skills,
+#experience,
+#projects,
+#education,
+#certificates,
+#contact {
+  scroll-margin-top: 5rem;
+}
+
 .social-rail { position: fixed; z-index: 35; top: 50%; left: 1.25rem; display: none; gap: 0.7rem; transform: translateY(-50%); }
 .social-rail-link { display: flex; align-items: center; width: 2.8rem; height: 2.8rem; overflow: hidden; border: 1px solid rgb(181 181 174 / 0.55); border-radius: 999px; background: rgb(5 5 5 / 0.82); color: var(--portfolio-white); transition: width 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
 .social-rail-mark { position: relative; display: grid; width: 2.8rem; min-width: 2.8rem; height: 2.8rem; place-items: center; color: var(--portfolio-white); }
@@ -747,6 +762,13 @@
   50%, 85% { background-color: rgb(209, 77, 69); box-shadow: 0 0 10px rgb(209, 77, 69); opacity: 1; }
   90%, 95% { opacity: 0.2; box-shadow: 0 0 0 transparent; }
   100% { background-color: var(--portfolio-green); box-shadow: 0 0 10px var(--portfolio-green); opacity: 1; }
+}
+
+@keyframes secured-blink {
+  0%, 40%, 100% { background-color: var(--portfolio-green); box-shadow: 0 0 8px var(--portfolio-green); opacity: 1; }
+  45%, 50% { opacity: 0.2; box-shadow: 0 0 0 transparent; }
+  55%, 85% { background-color: white; box-shadow: 0 0 8px white; opacity: 1; }
+  90%, 95% { opacity: 0.2; box-shadow: 0 0 0 transparent; }
 }
 @keyframes nova-burst { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }  
 @keyframes nova-flash { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }  

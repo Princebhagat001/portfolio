@@ -38,7 +38,7 @@ function Navbar() {
   }, [])
 
   return (
-    <header className="site-header fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-black/90 backdrop-blur-md">
+    <header className="site-header fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-[#050505]/95 backdrop-blur-lg">
       <nav className="mx-auto flex min-h-16 max-w-[1600px] items-center justify-between gap-4 px-5 sm:min-h-20 sm:px-8 lg:px-12" aria-label="Main navigation">
         <a href="#home" className="shrink-0 text-xl font-bold tracking-[0.1em] text-white transition-colors hover:text-white/80" aria-label={`${personal.fullName} home`}>
           <span className="text-[var(--portfolio-green)]">./</span>prince
