@@ -2,12 +2,3 @@
   position: relative;
   z-index: 1;
 }
-
-.site-content .abstract-field:not(.shared-galaxy-field):not(.hero-grid)::before,
-.site-content .abstract-field:not(.shared-galaxy-field):not(.hero-grid)::after,
-.site-content .terminal-section::before,
-.site-content .terminal-section::after {
-  content: none !important;
-  background: none !important;
-  animation: none !important;
-}

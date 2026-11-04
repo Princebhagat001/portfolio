@@ -1,10 +1,12 @@
 import { personal } from '../data/personal'
+import { socials } from '../data/socials'
 
 const railLinks = [
-  { label: 'Email', href: `mailto:${personal.email}`, icon: '/icons/email.svg', external: false },
-  { label: 'GitHub', href: 'https://github.com/Princebhagat001', icon: '/icons/github.svg', external: true },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/princebhagat0/', icon: '/icons/linkedin.svg', external: true },
-  { label: 'Instagram', href: 'https://www.instagram.com/p.rince10/', icon: '/icons/instagram.svg', external: true },
+  ...socials.filter(({ label }) => label !== 'TryHackMe').map((social) => ({
+    ...social,
+    external: social.label !== 'Email' && social.external,
+    icon: `/icons/${social.label.toLowerCase()}.svg`,
+  })),
   { label: 'Resume', href: personal.resumePath, icon: '/icons/resume.svg', external: true },
 ]
 

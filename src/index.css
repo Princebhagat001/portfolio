@@ -140,14 +140,10 @@
 .art-border-10 { border-color: color-mix(in srgb, currentColor 10%, transparent); }
 .art-border-15 { border-color: color-mix(in srgb, currentColor 15%, transparent); }
 .art-border-20 { border-color: color-mix(in srgb, currentColor 20%, transparent); }
-.art-bg-10 { background-color: color-mix(in srgb, currentColor 10%, transparent); }
-.art-bg-15 { background-color: color-mix(in srgb, currentColor 15%, transparent); }
-.art-bg-30 { background-color: color-mix(in srgb, currentColor 30%, transparent); }
 .art-bg-50 { background-color: color-mix(in srgb, currentColor 50%, transparent); }
 .art-bg-60 { background-color: color-mix(in srgb, currentColor 60%, transparent); }
 .art-bg-80 { background-color: color-mix(in srgb, currentColor 80%, transparent); }
 .art-shadow-15 { box-shadow: 0 0 15px currentColor; }
-.art-shadow-40 { box-shadow: 0 0 40px currentColor; }
 .art-gradient-line { background: linear-gradient(to right, transparent, color-mix(in srgb, currentColor 15%, transparent), transparent); }
 
 /* Pause the decorative motion when the Hero art is outside the viewport. */
@@ -295,10 +291,6 @@
   background: var(--portfolio-black);
 }
 
-.hero-status-signal {
-  color: var(--portfolio-green);
-}
-
 /* CSS Galaxy Field with abstract constellation lines and nebula dust */
 @keyframes cosmic-drift {
   0% { transform: rotate(0deg) scale(1) translate(0, 0); }
@@ -399,25 +391,6 @@
 
 .abstract-field::after {
   background: radial-gradient(ellipse at 50% 60%, transparent 5%, rgb(0 0 0 / 0.4) 68%, rgb(0 0 0 / 0.9) 100%);
-}
-
-.terminal-section::before {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.52;
-  background-image: linear-gradient(rgb(105 173 63 / 0.09) 1px, transparent 1px), linear-gradient(90deg, rgb(105 173 63 / 0.09) 1px, transparent 1px), radial-gradient(circle at 10% 23%, rgb(105 173 63 / 0.7) 0 1px, transparent 2px), radial-gradient(circle at 80% 40%, rgb(105 173 63 / 0.6) 0 1px, transparent 2px), radial-gradient(circle at 43% 76%, rgb(209 77 69 / 0.55) 0 1px, transparent 2px);
-  background-size: 62px 62px, 62px 62px, auto, auto, auto;
-  content: '';
-  mask-image: linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
-}
-
-.terminal-section::after {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 0%, rgb(0 0 0 / 0.28) 68%, rgb(0 0 0 / 0.75) 100%);
-  content: '';
 }
 
 .terminal-prompt,
@@ -751,10 +724,6 @@
   50% { color: rgb(105 173 63); }
   75% { color: rgb(209 77 69); }
   100% { color: rgb(105 173 63); }
-}
-@keyframes pulse-glow {
-  0%, 20%, 80%, 100% { box-shadow: 0 0 0 transparent; }
-  50% { box-shadow: 0 0 22px currentColor; }
 }
 @keyframes dual-blink {
   0%, 35% { background-color: var(--portfolio-green); box-shadow: 0 0 10px var(--portfolio-green); opacity: 1; }

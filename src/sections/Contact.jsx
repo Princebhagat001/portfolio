@@ -2,13 +2,6 @@ import { useState } from 'react'
 import { personal } from '../data/personal'
 import { socials } from '../data/socials'
 
-const socialHandles = {
-  GitHub: 'github.com/Princebhagat001',
-  LinkedIn: 'linkedin.com/in/princebhagat0',
-  TryHackMe: 'tryhackme.com/p/Princebhagat001',
-  Instagram: 'instagram.com/p.rince10',
-}
-
 function TerminalDots() {
   return <span className="flex gap-2" aria-hidden="true"><i className="terminal-dot terminal-dot-red" /><i className="terminal-dot terminal-dot-yellow" /><i className="terminal-dot terminal-dot-green" /></span>
 }
@@ -41,7 +34,10 @@ function Contact() {
               <h3 id="contact-info-heading" className="font-mono text-xl font-bold text-[var(--portfolio-white)]">$ cat contact_info</h3>
               <div className="mt-7 space-y-3">
                 <a href={`mailto:${personal.email}`} className="contact-channel"><span className="channel-symbol">@</span><span><small>Email</small><strong>{personal.email}</strong></span></a>
-                {socials.filter((social) => social.label !== 'Email').map((social) => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="contact-channel" aria-label={`${social.label}: ${socialHandles[social.label]} (opens in a new tab)`}><span className="channel-symbol">↗</span><span><small>{social.label}</small><strong>{socialHandles[social.label]}</strong></span></a>)}
+                {socials.filter((social) => social.label !== 'Email').map((social) => {
+                  const handle = social.href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
+                  return <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="contact-channel" aria-label={`${social.label}: ${handle} (opens in a new tab)`}><span className="channel-symbol">↗</span><span><small>{social.label}</small><strong>{handle}</strong></span></a>
+                })}
               </div>
               <div className="mt-8 border-t border-[var(--portfolio-green)]/30 pt-5">
                 <p className="font-display text-base font-semibold text-[var(--portfolio-white)]"><span className="mr-2 text-[var(--portfolio-green)]">✓</span>Secure communication</p>
