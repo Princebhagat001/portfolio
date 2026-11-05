@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Allow: /api/og
+Disallow: /api/
 
 Sitemap: https://princebhagat.com.np/sitemap.xml

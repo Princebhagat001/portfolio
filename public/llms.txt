@@ -1,0 +1,20 @@
+# Prince Bhagat
+
+> Portfolio of Prince Bhagat, a cybersecurity student in Kathmandu, Nepal.
+
+This site presents Prince Bhagat's cybersecurity learning, skills, experience, projects, education, certificates, and contact links.
+
+## Portfolio sections
+
+- [Home](https://princebhagat.com.np/#home): Introduction and resume.
+- [Skills](https://princebhagat.com.np/#skills): Current technical skills.
+- [Experience](https://princebhagat.com.np/#experience): Community and practical experience.
+- [Projects](https://princebhagat.com.np/#projects): Public projects and security learning profiles.
+- [Education](https://princebhagat.com.np/#education): Education background.
+- [Certificates](https://princebhagat.com.np/#certificates): Courses and certificates.
+- [Contact](https://princebhagat.com.np/#contact): Contact and social links.
+
+## Other resources
+
+- [Resume](https://princebhagat.com.np/resume.pdf)
+- [Sitemap](https://princebhagat.com.np/sitemap.xml)

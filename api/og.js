@@ -88,7 +88,7 @@ async function createTextSvg() {
             color: '#80dce5',
           },
         },
-        'Security Researcher',
+        'Cybersecurity Student',
       ),
       h(
         'div',

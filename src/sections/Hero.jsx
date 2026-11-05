@@ -23,7 +23,7 @@ function Hero() {
           </h1>
           
           <h2 className="text-xl sm:text-2xl font-medium text-white/90 mb-6 font-mono tracking-wide flex items-center gap-3">
-            <GlitchText text="Cyber Security Researcher" className="inline-block" />
+            <GlitchText text="Cybersecurity Researcher" className="inline-block" />
           </h2>
           
           <div className="flex items-center gap-2 text-[var(--portfolio-grey)] text-xs uppercase tracking-[0.1em] font-medium mb-8">
