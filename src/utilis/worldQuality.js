@@ -1,15 +1,15 @@
-// Keep only settings consumed by the existing CSS/DOM geometric artwork.
+// Settings consumed by GeometricArt's update pacing and pointer movement.
 export const qualityLevels = {
   low: {
-    updatesPerSecond: 30,
+    fps: 30,
     pointerStrength: 0.65,
   },
   medium: {
-    updatesPerSecond: 45,
+    fps: 45,
     pointerStrength: 0.85,
   },
   high: {
-    updatesPerSecond: 60,
+    fps: 60,
     pointerStrength: 1,
   },
 };

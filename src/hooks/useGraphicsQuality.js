@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { usePrefersReducedMotion } from './usePreferedReduceMotion';
 import { chooseQuality, qualityLevels } from '../utilis/worldQuality';
 
 const DEFAULT_QUALITY = 'low';
@@ -10,20 +11,17 @@ function getInitialDeviceState() {
   const quality = Object.prototype.hasOwnProperty.call(qualityLevels, initialQuality)
     ? initialQuality
     : DEFAULT_QUALITY;
-  const reducedMotion = typeof window !== 'undefined'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  return { quality, reducedMotion };
+  return { quality };
 }
 
 export default function useGraphicsQuality() {
   const [deviceState, setDeviceState] = useState(getInitialDeviceState);
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const browserWindow = globalThis.window;
     const browserNavigator = globalThis.navigator;
     const connection = browserNavigator.connection;
-    const motionQuery = browserWindow.matchMedia('(prefers-reduced-motion: reduce)');
     let resizeFrame = 0;
     let probeFrame = 0;
     let probeDelay = 0;
@@ -46,13 +44,12 @@ export default function useGraphicsQuality() {
       const quality = QUALITY_RANK[selectedQuality] > QUALITY_RANK[qualityCeiling]
         ? qualityCeiling
         : selectedQuality;
-      const reducedMotion = motionQuery.matches;
       currentQuality = quality;
       document.documentElement.dataset.galaxyQuality = quality;
 
-      setDeviceState((previous) => previous.quality === quality && previous.reducedMotion === reducedMotion
+      setDeviceState((previous) => previous.quality === quality
         ? previous
-        : { quality, reducedMotion });
+        : { quality });
     };
 
     const handleResize = () => {
@@ -136,11 +133,6 @@ export default function useGraphicsQuality() {
 
     updateDeviceState();
     browserWindow.addEventListener('resize', handleResize, { passive: true });
-    if (motionQuery.addEventListener) {
-      motionQuery.addEventListener('change', updateDeviceState);
-    } else {
-      motionQuery.addListener?.(updateDeviceState);
-    }
     connection?.addEventListener?.('change', updateDeviceState);
     browserWindow.document.addEventListener('visibilitychange', handleVisibilityChange);
     if (browserWindow.document.readyState === 'complete') startFrameRateProbe();
@@ -151,11 +143,6 @@ export default function useGraphicsQuality() {
       stopFrameRateProbe();
       browserWindow.removeEventListener('resize', handleResize);
       browserWindow.removeEventListener('load', startFrameRateProbe);
-      if (motionQuery.removeEventListener) {
-        motionQuery.removeEventListener('change', updateDeviceState);
-      } else {
-        motionQuery.removeListener?.(updateDeviceState);
-      }
       connection?.removeEventListener?.('change', updateDeviceState);
       browserWindow.document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -163,6 +150,7 @@ export default function useGraphicsQuality() {
 
   return {
     ...deviceState,
+    reducedMotion,
     settings: qualityLevels[deviceState.quality],
   };
 }
